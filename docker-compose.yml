@@ -12,6 +12,9 @@ services:
     depends_on:
       - base_db_postgres
       - base_db_pgadmin
+      - base_redis
+    links:
+      - base_redis
     environment:
       NODE_ENV: production
     networks:
@@ -53,6 +56,13 @@ services:
     networks:
       - postgres
     restart: unless-stopped
+
+  base_redis:
+    image: bitnami/redis:latest
+    expose:
+      - 6379
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-redispassword}
 
 networks:
   postgres:
