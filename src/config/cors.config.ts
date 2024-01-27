@@ -3,12 +3,13 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 class CorsConfig {
   public config = {
     exposedHeaders: [
-      'X-Total-Count',
-      'X-Current-Page',
-      'X-Item-Count',
-      'X-Items-Per-Page',
       'X-Total-Items',
       'X-Total-Pages',
+      'X-Current-Page',
+
+      'X-Total-Count',
+      'X-Item-Count',
+      'X-Items-Per-Page',
     ],
     origin: function (origin, callback) {
       const domains = process.env.CORS_RELEASED_DOMAINS.split(',');

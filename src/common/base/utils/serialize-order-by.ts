@@ -8,8 +8,19 @@ export interface IOrderBy {
   order: EnumOrder;
 }
 
-export const serializeOrderBy = (order: IOrderBy) => {
+export const serializeOrderBy = (value: string | IOrderBy) => {
+  if (value && typeof value === 'string') {
+    const orderBy = new Object();
+    const { column, order } = JSON.parse(value) as IOrderBy;
+    orderBy[column] = order.toUpperCase();
+    return orderBy;
+  }
+
+  return orderByJson(value as IOrderBy);
+};
+
+const orderByJson = (value: IOrderBy) => {
   const orderBy = new Object();
-  if (order) orderBy[order.column] = order.order;
+  orderBy[value.column] = value.order.toUpperCase();
   return orderBy;
 };

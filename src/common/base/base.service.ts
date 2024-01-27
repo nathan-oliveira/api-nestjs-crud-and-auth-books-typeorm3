@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { Repository, DeepPartial, FindOptionsWhere } from 'typeorm';
 import { createReadStream } from 'fs';
 import * as fs from 'fs';
@@ -7,13 +6,14 @@ import * as fs from 'fs';
 import { AppEntity } from 'src/common/base/entities/app.entity';
 
 import { QueryParamsDto } from 'src/common/base/dtos/query-params.dto';
-import { getMimetype } from 'src/common/utils/get-mimetype';
+import { getMimetype } from 'src/common/base/utils/get-mimetype';
 import { IServiceOptionsDto } from './dtos/service-options.dto';
 
 import { serializeOrderBy } from './utils/serialize-order-by';
 import { serializeConditions } from './utils/serialize-conditions';
 import { ReadPhotoDto } from 'src/modules/users/dtos';
 import { removeImageStorage } from './utils/storage';
+import { Pagination, paginate } from './paginate';
 
 @Injectable()
 export abstract class BaseService<TEntity extends AppEntity> {
@@ -37,14 +37,10 @@ export abstract class BaseService<TEntity extends AppEntity> {
     const where = serializeConditions(conditions, search, this.options);
     if (where) options['where'] = where;
 
-    return paginate<TEntity>(
-      this.repository,
-      {
-        page: Number(page || 1),
-        limit: Number(limit || 10),
-      },
-      options,
-    );
+    if (page) options['skip'] = page;
+    if (limit) options['take'] = limit;
+
+    return paginate<TEntity>(this.repository, options);
   }
 
   async findAll(): Promise<TEntity[]> {

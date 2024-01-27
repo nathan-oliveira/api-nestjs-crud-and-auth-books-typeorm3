@@ -1,4 +1,4 @@
-export const errorMessagesPosgresSQL = {
+export const errorMessagesPostgresql = {
   // Restrições de Chave Primária e Única
   '23505': 'O registro já existe no banco de dados.',
   '23514': 'A violação de uma restrição de chave primária ocorreu.',

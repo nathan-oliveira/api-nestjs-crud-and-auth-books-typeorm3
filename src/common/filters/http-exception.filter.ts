@@ -1,10 +1,16 @@
 import { Response } from 'express';
-import { ArgumentsHost, ExceptionFilter, HttpStatus } from '@nestjs/common';
+import {
+  ArgumentsHost,
+  ExceptionFilter,
+  HttpStatus,
+  Catch,
+} from '@nestjs/common';
 
-import { errorMessagesPosgresSQL } from 'src/database/errors/error-messages';
+import { errorMessagesPostgresql } from 'src/database/errors/error-messages';
 
 import { HttpExceptionDto } from './dto/http-exception.dto';
 
+@Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpExceptionDto, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -15,8 +21,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
         ? exception.message
         : exception.response.message;
 
-    if (exception.code && errorMessagesPosgresSQL[exception.code]) {
-      message = errorMessagesPosgresSQL[exception.code];
+    if (exception.code && errorMessagesPostgresql[exception.code]) {
+      message = errorMessagesPostgresql[exception.code];
     }
 
     const statusCode = exception.status || HttpStatus.BAD_REQUEST;

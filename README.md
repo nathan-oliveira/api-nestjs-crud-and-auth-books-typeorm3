@@ -21,7 +21,7 @@ $ yarn add @nestjs/passport passport passport-local
 $ yarn add @types/passport-local -D
 $ yarn add @nestjs/jwt passport-jwt 
 $ yarn add @types/passport-jwt -D
-$ yarn add nestjs-typeorm-paginate
+$ yarn add ioredis
 $ yarn add @types/multer -D
 $ yarn add tsconfig-paths -D
 $ yarn upgrade

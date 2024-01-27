@@ -37,5 +37,5 @@ export class QueryParamsDto {
     required: false,
   })
   @IsOptional()
-  orderBy?: IOrderBy;
+  orderBy?: string | IOrderBy;
 }

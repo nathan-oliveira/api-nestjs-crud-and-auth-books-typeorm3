@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { Request, Response, NextFunction } from 'express';
+// import * as bodyParser from 'body-parser';
 
 import CorsConfig from './cors.config';
 import SwaggerConfig from './swagger.config';
@@ -31,6 +32,7 @@ export class AppConfig {
   private setGlobalConfigs(): void {
     this.app.setGlobalPrefix('api');
     this.app.useGlobalFilters(new HttpExceptionFilter());
+    this.app.useBodyParser('json', { limit: '100mb' });
     this.app.useGlobalPipes(
       new ValidationPipe({
         whitelist: true,
@@ -38,6 +40,8 @@ export class AppConfig {
         transform: true,
       }),
     );
+    // this.app.use(bodyParser.json({ limit: '100mb' }));
+    // this.app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
   }
 
   private enableSwagger = () => SwaggerConfig.handler(this.app);
