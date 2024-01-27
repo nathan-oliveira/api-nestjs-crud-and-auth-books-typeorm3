@@ -3,7 +3,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import { NestApplicationOptions } from '@nestjs/common';
 
-import { AppModule } from './app.module';
+import { AppModule } from './modules/app.module';
 import { AppConfig } from './config/app.config';
 
 async function bootstrap() {

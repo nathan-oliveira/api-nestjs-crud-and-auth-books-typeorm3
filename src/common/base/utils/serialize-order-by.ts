@@ -10,7 +10,7 @@ export interface IOrderBy {
 
 export const serializeOrderBy = (value: string | IOrderBy) => {
   if (value && typeof value === 'string') {
-    const orderBy = new Object();
+    const orderBy = {};
     const { column, order } = JSON.parse(value) as IOrderBy;
     orderBy[column] = order.toUpperCase();
     return orderBy;
@@ -20,7 +20,7 @@ export const serializeOrderBy = (value: string | IOrderBy) => {
 };
 
 const orderByJson = (value: IOrderBy) => {
-  const orderBy = new Object();
+  const orderBy = {};
   orderBy[value.column] = value.order.toUpperCase();
   return orderBy;
 };

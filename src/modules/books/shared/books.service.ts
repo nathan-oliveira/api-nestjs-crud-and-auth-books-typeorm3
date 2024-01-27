@@ -1,22 +1,23 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-
-import { BookEntity } from 'src/modules/books/entities/book.entity';
+import { Repository, Between } from 'typeorm';
 
 import { BaseService } from 'src/common/base/base.service';
+import { BookEntity } from 'src/modules/books/entities/book.entity';
 
 import {
   ReadBookDto,
   CreateBookDto,
   UpdateBookDto,
   ReadPhotoDto,
+  QueryParamsBookDto,
 } from 'src/modules/books/dtos';
 
 import {
   removeImageStorage,
   updateImageStorage,
 } from 'src/common/base/utils/storage';
+import { serializeRangeDates } from 'src/common/base/utils/serialize-range-dates';
 
 @Injectable()
 export class BooksService extends BaseService<BookEntity> {

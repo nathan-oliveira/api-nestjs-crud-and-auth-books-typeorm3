@@ -14,6 +14,7 @@ import { serializeConditions } from './utils/serialize-conditions';
 import { ReadPhotoDto } from 'src/modules/users/dtos';
 import { removeImageStorage } from './utils/storage';
 import { Pagination, paginate } from './paginate';
+import { serializeRangeDates } from './utils/serialize-range-dates';
 
 @Injectable()
 export abstract class BaseService<TEntity extends AppEntity> {
@@ -26,12 +27,17 @@ export abstract class BaseService<TEntity extends AppEntity> {
     queryParams: QueryParamsDto,
     conditions: Array<object> = [],
   ): Promise<Pagination<TEntity>> {
-    const { page, limit, search, orderBy } = queryParams;
-    const options = new Object();
+    const { page, limit, search, orderBy, rangeDates } = queryParams;
+    const options = {};
 
     if (orderBy) options['order'] = serializeOrderBy(orderBy);
     if (this.options && this.options.relations) {
       options['relations'] = this.options.relations;
+    }
+
+    if (rangeDates) {
+      const dates = serializeRangeDates(rangeDates);
+      conditions.push(dates);
     }
 
     const where = serializeConditions(conditions, search, this.options);
@@ -54,6 +60,12 @@ export abstract class BaseService<TEntity extends AppEntity> {
 
     if (!result) throw new NotFoundException('Register not found.');
     return result;
+  }
+
+  async findByField(field: string, value: string): Promise<TEntity[]> {
+    const query = {};
+    query[field] = value;
+    return await this.repository.find(query);
   }
 
   async create(createEntityDto: DeepPartial<TEntity>): Promise<TEntity> {
