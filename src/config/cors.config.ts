@@ -6,9 +6,6 @@ class CorsConfig {
       'X-Total-Items',
       'X-Total-Pages',
       'X-Current-Page',
-
-      'X-Total-Count',
-      'X-Item-Count',
       'X-Items-Per-Page',
     ],
     origin: function (origin, callback) {

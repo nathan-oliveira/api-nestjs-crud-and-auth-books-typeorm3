@@ -4,15 +4,11 @@ interface ObjectLiteral {
   [s: string]: any;
 }
 
-interface IPaginationMeta {
+interface IPaginationMeta extends ObjectLiteral {
   totalItems?: number;
   totalPages?: number;
   currentPage?: number;
-}
-
-interface PaginatedData<PaginationObject> {
-  items: PaginationObject[];
-  totalItems: number;
+  itemsPerPage?: number;
 }
 
 export interface Pagination<PaginationObject> extends ObjectLiteral {
@@ -20,17 +16,19 @@ export interface Pagination<PaginationObject> extends ObjectLiteral {
   meta: IPaginationMeta;
 }
 
-export async function paginate<T>(
-  repository: Repository<T>,
+export async function paginate<TEntity>(
+  repository: Repository<TEntity>,
   options: FindManyOptions,
-): Promise<Pagination<T>> {
+): Promise<Pagination<TEntity>> {
   const currentPage = Number(options.skip || 1);
+  const itemsPerPage = Number(options.take || 10);
+
   const promises = [
-    new Promise<Array<T>>((resolve) => {
+    new Promise<TEntity[]>((resolve) => {
       return resolve(
         repository.find({
-          skip: Number(options.take || 10) * (currentPage - 1),
-          take: Number(options.take || 10),
+          skip: itemsPerPage * (currentPage - 1),
+          take: itemsPerPage,
           relations: options.relations ?? [],
           order: options.order ?? {},
           where: options.where,
@@ -56,7 +54,7 @@ export async function paginate<T>(
       totalItems,
       totalPages,
       currentPage,
-      // itemCount: items.length,
+      itemsPerPage,
     },
-  } as Pagination<T>;
+  } as Pagination<TEntity>;
 }
