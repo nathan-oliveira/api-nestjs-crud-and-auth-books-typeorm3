@@ -15,7 +15,7 @@ async function bootstrap() {
     logger: nodeEnv !== 'development' ? ['error'] : true,
   } as NestApplicationOptions);
 
-  const app = new AppConfig(nestApp).app;
+  const app = new AppConfig(nestApp, configService).createApp();
   await app.listen(port, () => console.log(`[+] http://localhost:${port}`));
 }
 

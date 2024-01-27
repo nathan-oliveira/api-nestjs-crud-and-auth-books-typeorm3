@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { RedisService } from 'src/config/redis.config';
 
-import { secretKey } from 'src/modules/auth/constants';
 import { JwtPayloadDto } from 'src/modules/auth/dtos';
 import { AuthService } from 'src/modules/auth/shared/auth.service';
 
@@ -13,10 +13,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private readonly authService: AuthService,
     private readonly redis: RedisService,
   ) {
+    const configService = new ConfigService();
+    const secretOrKey = configService.get<string>('JWT_SECRET');
+
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: secretKey,
+      secretOrKey,
     });
   }
 

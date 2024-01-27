@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { Request, Response, NextFunction } from 'express';
+import { ConfigService } from '@nestjs/config';
 // import * as bodyParser from 'body-parser';
 
 import CorsConfig from './cors.config';
@@ -9,24 +10,28 @@ import SwaggerConfig from './swagger.config';
 import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
 
 export class AppConfig {
-  public app: NestExpressApplication;
+  private app: NestExpressApplication;
+  private configService: ConfigService;
 
-  constructor(readonly appNest: NestExpressApplication) {
+  constructor(
+    readonly appNest: NestExpressApplication,
+    readonly configServiceNest: ConfigService,
+  ) {
     this.app = appNest;
+    this.configService = configServiceNest;
+  }
+
+  createApp(): NestExpressApplication {
     this.enableCors();
     this.setGlobalConfigs();
     this.enableSwagger();
     this.removeExpressFromResponse();
+    return this.app;
   }
 
   private enableCors(): void {
-    const isDevelopment = process.env.NODE_ENV === 'development';
-
-    if (isDevelopment) {
-      this.app.enableCors({ exposedHeaders: CorsConfig.exposedHeaders });
-    } else {
-      this.app.enableCors(CorsConfig);
-    }
+    const config = new CorsConfig(this.configService).getConfig();
+    this.app.enableCors(config);
   }
 
   private setGlobalConfigs(): void {
