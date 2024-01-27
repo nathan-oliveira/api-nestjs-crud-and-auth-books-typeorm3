@@ -46,8 +46,9 @@ export class AuthController {
   @JwtAuth(Rule.USER, Rule.ADMIN)
   @Post('logout')
   async logout(@Request() req: RequestExpress): Promise<void> {
-    const authHeader = req.headers.authorization;
-    const [, token] = authHeader.split(' ');
-    return this.authService.logout(token);
+    // const authHeader = req.headers.authorization;
+    // const [, token] = authHeader.split(' ');
+    const user = req.user as LoginUserDto;
+    return this.authService.logout(user.id);
   }
 }

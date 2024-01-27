@@ -9,6 +9,7 @@ import { AuthService } from './shared/auth.service';
 import { LocalStrategy } from './shared/local/local.strategy';
 import { JwtStrategy } from './shared/jwt/jwt.strategy';
 import { secretKey } from './constants';
+import { RedisService } from 'src/config/redis.config';
 
 @Module({
   imports: [
@@ -20,6 +21,6 @@ import { secretKey } from './constants';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [RedisService, AuthService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}

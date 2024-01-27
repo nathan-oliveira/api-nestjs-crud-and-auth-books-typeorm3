@@ -59,13 +59,17 @@ services:
 
   base_redis:
     image: bitnami/redis:latest
+    ports:
+      - "${REDIS_PORT:-6379}:${REDIS_PORT:-6379}"
     expose:
-      - 6379
+      - ${REDIS_PORT:-6379}
     environment:
-      REDIS_PASSWORD: ${REDIS_PASSWORD:-redispassword}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-password}
 
 networks:
   postgres:
+    driver: bridge
+  redis:
     driver: bridge
   
 volumes:

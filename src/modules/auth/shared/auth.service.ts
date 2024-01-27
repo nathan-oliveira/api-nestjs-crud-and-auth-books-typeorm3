@@ -12,12 +12,14 @@ import {
 } from 'src/modules/auth/dtos';
 
 import { CreateUserDto, ReadUserDto } from 'src/modules/users/dtos';
+import { RedisService } from 'src/config/redis.config';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly redis: RedisService,
   ) {}
 
   async compareHash(password: string, hash: string): Promise<boolean> {
@@ -72,19 +74,19 @@ export class AuthService {
     const token = this.jwtService.sign({ sub: id, rule, active });
     const { exp: expirationTime } = this.jwtService.verify(token);
 
-    // registrar token no redis
-
-    return {
+    const result = {
       token,
       userId: id,
       active,
       rule,
       expirationTime,
     };
+
+    await this.redis.set(id, JSON.stringify(result), 'EX', 43200);
+    return result;
   }
 
-  async logout(token: string): Promise<void> {
-    console.log(token);
-    // remover token do redis
+  async logout(id: string): Promise<void> {
+    await this.redis.del(id);
   }
 }
