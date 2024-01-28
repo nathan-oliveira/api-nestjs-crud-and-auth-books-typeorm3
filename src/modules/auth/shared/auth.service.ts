@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
@@ -13,11 +13,16 @@ import {
 
 import { CreateUserDto, ReadUserDto } from 'src/modules/users/dtos';
 import { RedisService } from 'src/config/redis.config';
+import {
+  IUserUseCasesType,
+  IUserUseCases
+} from 'src/modules/users/usecases/user.use-cases';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
+    @Inject(IUserUseCasesType)
+    private readonly usersService: IUserUseCases,
     private readonly jwtService: JwtService,
     private readonly redis: RedisService,
   ) {}

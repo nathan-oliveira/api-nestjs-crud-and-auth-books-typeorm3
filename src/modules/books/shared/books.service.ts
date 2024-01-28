@@ -16,9 +16,13 @@ import {
   removeImageStorage,
   updateImageStorage,
 } from 'src/common/base/utils/storage';
+import { IBookUseCases } from '../usecases/book.use-cases';
 
 @Injectable()
-export class BooksService extends BaseService<BookEntity> {
+export class BooksService
+  extends BaseService<BookEntity>
+  implements IBookUseCases
+{
   constructor(
     @InjectRepository(BookEntity)
     private readonly userRepository: Repository<BookEntity>,

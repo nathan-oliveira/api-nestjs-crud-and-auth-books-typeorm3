@@ -1,4 +1,5 @@
 import {
+  Inject,
   Controller,
   ClassSerializerInterceptor,
   UseInterceptors,
@@ -30,15 +31,19 @@ import {
   UpdateUserDto,
 } from 'src/modules/users/dtos';
 
-import { UsersService } from './users.service';
+import { IUserUseCasesType, IUserUseCases } from '../usecases/user.use-cases';
 import { MulterMiddleware } from 'src/common/middlewares/multer.middleware';
+
 
 @ApiTags('Users')
 @JwtAuth(Rule.USER, Rule.ADMIN)
 @Controller('users')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    @Inject(IUserUseCasesType)
+    private readonly usersService: IUserUseCases,
+  ) {}
 
   @Post()
   @UseInterceptors(

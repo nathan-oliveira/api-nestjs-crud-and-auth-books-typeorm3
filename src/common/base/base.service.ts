@@ -3,21 +3,24 @@ import { Repository, DeepPartial, FindOptionsWhere } from 'typeorm';
 import { createReadStream } from 'fs';
 import * as fs from 'fs';
 
+import { IBaseUseCases } from 'src/common/base/base.use-cases';
 import { AppEntity } from 'src/common/base/entities/app.entity';
 
 import { QueryParamsDto } from 'src/common/base/dtos/query-params.dto';
 import { getMimetype } from 'src/common/base/utils/get-mimetype';
+import { ReadPhotoDto } from 'src/common/base/dtos/read-photo.dto';
 import { IServiceOptionsDto } from './dtos/service-options.dto';
 
 import { serializeOrderBy } from './utils/serialize-order-by';
 import { serializeConditions } from './utils/serialize-conditions';
-import { ReadPhotoDto } from 'src/modules/users/dtos';
 import { removeImageStorage } from './utils/storage';
 import { Pagination, paginate } from './paginate';
 import { serializeRangeDates } from './utils/serialize-range-dates';
 
 @Injectable()
-export abstract class BaseService<TEntity extends AppEntity> {
+export abstract class BaseService<TEntity extends AppEntity>
+  implements IBaseUseCases
+{
   constructor(
     readonly repository: Repository<TEntity>,
     readonly options: IServiceOptionsDto = null,
@@ -107,7 +110,7 @@ export abstract class BaseService<TEntity extends AppEntity> {
     await this.repository.save(result);
   }
 
-  async removeToDB(id: string) {
+  async removeToDB(id: string): Promise<void> {
     const result = await this.findById(id);
     await this.repository.remove(result);
   }

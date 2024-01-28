@@ -16,16 +16,21 @@ import {
   ReadUserDto,
   CreateUserDto,
   UpdateUserDto,
-  ReadPhotoDto,
 } from 'src/modules/users/dtos';
+
+import { ReadPhotoDto } from 'src/common/base/dtos/read-photo.dto';
 
 import {
   removeImageStorage,
   updateImageStorage,
 } from 'src/common/base/utils/storage';
+import { IUserUseCases } from '../usecases/user.use-cases';
 
 @Injectable()
-export class UsersService extends BaseService<UserEntity> {
+export class UsersService
+  extends BaseService<UserEntity>
+  implements IUserUseCases
+{
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,

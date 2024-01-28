@@ -9,6 +9,7 @@ import {
   Req,
   Patch,
   Delete,
+  Inject,
 } from '@nestjs/common';
 import { Request, Express } from 'express';
 import { plainToClass } from 'class-transformer';
@@ -19,15 +20,21 @@ import { Rule } from 'src/modules/auth/enums/rule.enum';
 import { JwtAuth } from 'src/common/decorators/jwt-auth.decorator';
 import { MulterMiddleware } from 'src/common/middlewares/multer.middleware';
 
-import { UsersService } from 'src/modules/users/shared/users.service';
 import { ReadProfileDto, UpdateProfileDto } from 'src/modules/profile/dtos';
+import {
+  IUserUseCasesType,
+  IUserUseCases
+} from 'src/modules/users/usecases/user.use-cases';
 
 @ApiTags('Profile')
 @JwtAuth(Rule.USER, Rule.ADMIN)
 @Controller('profile')
 @UseInterceptors(ClassSerializerInterceptor)
 export class ProfileController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    @Inject(IUserUseCasesType)
+    private readonly usersService: IUserUseCases,
+  ) {}
 
   @Get()
   @ApiOkResponse({ type: ReadProfileDto })
