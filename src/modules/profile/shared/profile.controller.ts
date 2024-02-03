@@ -23,7 +23,7 @@ import { MulterMiddleware } from 'src/common/middlewares/multer.middleware';
 import { ReadProfileDto, UpdateProfileDto } from 'src/modules/profile/dtos';
 import {
   IUserUseCasesType,
-  IUserUseCases
+  IUserUseCases,
 } from 'src/modules/users/usecases/user.use-cases';
 
 @ApiTags('Profile')

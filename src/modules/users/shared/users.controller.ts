@@ -34,7 +34,6 @@ import {
 import { IUserUseCasesType, IUserUseCases } from '../usecases/user.use-cases';
 import { MulterMiddleware } from 'src/common/middlewares/multer.middleware';
 
-
 @ApiTags('Users')
 @JwtAuth(Rule.USER, Rule.ADMIN)
 @Controller('users')

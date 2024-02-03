@@ -15,7 +15,7 @@ import { CreateUserDto, ReadUserDto } from 'src/modules/users/dtos';
 import { RedisService } from 'src/config/redis.config';
 import {
   IUserUseCasesType,
-  IUserUseCases
+  IUserUseCases,
 } from 'src/modules/users/usecases/user.use-cases';
 
 @Injectable()

@@ -4,7 +4,7 @@ interface ObjectLiteral {
   [s: string]: any;
 }
 
-interface IPaginationMeta extends ObjectLiteral {
+export interface IPaginationMeta extends ObjectLiteral {
   totalItems?: number;
   totalPages?: number;
   currentPage?: number;
