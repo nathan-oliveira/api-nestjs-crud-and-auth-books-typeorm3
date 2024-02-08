@@ -85,3 +85,4 @@ export const mockFileMulter = () => {
 
 export * from './users';
 export * from './books';
+export * from './users';

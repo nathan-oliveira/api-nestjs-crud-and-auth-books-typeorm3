@@ -6,8 +6,6 @@ import { CreateUserDto, ReadUserDto, UpdateUserDto } from '../dtos';
 export const IUserUseCasesType = 'IUserUseCasesType';
 
 export class IUserUseCases extends IBaseUseCases {
-  convertToHash: (password: string) => Promise<string>;
-
   findUserByUserName: (username: string) => Promise<ReadUserDto>;
 
   verifyExistUser: (data: CreateUserDto | UpdateUserDto) => Promise<void>;

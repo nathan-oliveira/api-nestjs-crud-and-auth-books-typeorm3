@@ -2,46 +2,46 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { faker } from '@faker-js/faker';
 
-import { BooksController } from './books.controller';
-import { BooksService } from './books.service';
-import { BookEntity } from 'src/modules/books/entities/book.entity';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
+import { UserEntity } from 'src/modules/users/entities/user.entity';
 
-import { IBookUseCasesType, IBookUseCases } from '../usecases/book.use-cases';
+import { IUserUseCasesType, IUserUseCases } from '../usecases/user.use-cases';
 
 import {
-  mockCreateBookDto,
+  mockCreateUserDto,
   mockFileMulter,
   mockMethodsRepository,
   mockQueryParams,
-  mockReadBookDto,
+  mockReadUserDto,
   mockStealableFile,
   mockRequest,
   mockResponse,
-  mockUpdateBookDto,
+  mockUpdateUserDto,
 } from 'src/../test/mock';
 
-describe('BooksController', () => {
-  let controller: BooksController;
-  let service: IBookUseCases;
+describe('UsersController', () => {
+  let controller: UsersController;
+  let service: IUserUseCases;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [BooksController],
+      controllers: [UsersController],
       providers: [
         {
-          provide: IBookUseCasesType,
-          useClass: BooksService,
+          provide: IUserUseCasesType,
+          useClass: UsersService,
         },
         {
-          provide: getRepositoryToken(BookEntity),
+          provide: getRepositoryToken(UserEntity),
           useValue: mockMethodsRepository,
         },
       ],
-      imports: [BookEntity],
+      imports: [UserEntity],
     }).compile();
 
-    controller = module.get<BooksController>(BooksController);
-    service = module.get<IBookUseCases>(IBookUseCasesType);
+    controller = module.get<UsersController>(UsersController);
+    service = module.get<IUserUseCases>(IUserUseCasesType);
   });
 
   it('controller must be defined', () => {
@@ -51,67 +51,63 @@ describe('BooksController', () => {
 
   describe('create', () => {
     it('must call the method and return the correct parameters', async () => {
-      const result = mockReadBookDto();
+      const result = mockReadUserDto();
 
       const findSpy = jest
         .spyOn(controller, 'create')
         .mockResolvedValueOnce(result);
 
-      const req = mockRequest();
-      const book = mockCreateBookDto();
+      const user = mockCreateUserDto();
       const photo = mockFileMulter();
 
-      await controller.create(req, book, photo);
+      await controller.create(user, photo);
 
-      expect(findSpy).toHaveBeenCalledWith(req, book, photo);
+      expect(findSpy).toHaveBeenCalledWith(user, photo);
     });
 
     it('should call the method and return invalid parameters', async () => {
-      const result = mockReadBookDto();
+      const result = mockReadUserDto();
 
       const findSpy = jest
         .spyOn(service, 'create')
         .mockResolvedValueOnce(result);
 
-      const req = mockRequest();
-      const book = mockCreateBookDto();
+      const user = mockCreateUserDto();
       const photo = mockFileMulter();
 
-      await controller.create(req, book, null);
+      await controller.create(user, null);
 
-      expect(findSpy).not.toHaveBeenCalledWith(req, book, photo);
+      expect(findSpy).not.toHaveBeenCalledWith(user, photo);
     });
 
     it('should call the method and return the result', async () => {
-      const result = mockReadBookDto();
+      const result = mockReadUserDto();
 
       jest.spyOn(controller, 'create').mockResolvedValueOnce(result);
 
-      const req = mockRequest();
-      const book = mockCreateBookDto();
+      const user = mockCreateUserDto();
       const photo = mockFileMulter();
 
-      expect(await controller.create(req, book, photo)).toEqual(result);
+      expect(await controller.create(user, photo)).toEqual(result);
     });
 
     it('should call the method and return the errors', () => {
       jest.spyOn(controller, 'create').mockRejectedValueOnce(new Error());
 
-      const req = mockRequest();
-      const book = mockCreateBookDto();
+      const user = mockCreateUserDto();
       const photo = mockFileMulter();
 
-      expect(controller.create(req, book, photo)).rejects.toThrow(new Error());
+      expect(controller.create(user, photo)).rejects.toThrow(new Error());
     });
   });
 
   describe('findAll', () => {
     it('must call the method and return the correct parameters', async () => {
-      const book = mockReadBookDto();
+      const user = mockReadUserDto();
 
       const findSpy = jest
         .spyOn(controller, 'findAll')
-        .mockResolvedValueOnce([book]);
+        .mockResolvedValueOnce([user]);
 
       const response = mockResponse();
       const queryParams = mockQueryParams();
@@ -122,11 +118,11 @@ describe('BooksController', () => {
     });
 
     it('should call the method and return invalid parameters', async () => {
-      const book = mockReadBookDto();
+      const user = mockReadUserDto();
 
       const findSpy = jest
         .spyOn(controller, 'findAll')
-        .mockResolvedValueOnce([book]);
+        .mockResolvedValueOnce([user]);
 
       const response = mockResponse();
       const queryParams = mockQueryParams();
@@ -137,14 +133,14 @@ describe('BooksController', () => {
     });
 
     it('should call the method and return the result', async () => {
-      const book = mockReadBookDto();
+      const user = mockReadUserDto();
 
-      jest.spyOn(controller, 'findAll').mockResolvedValueOnce([book]);
+      jest.spyOn(controller, 'findAll').mockResolvedValueOnce([user]);
 
       const response = mockResponse();
       const queryParams = mockQueryParams();
 
-      expect(await controller.findAll(response, queryParams)).toEqual([book]);
+      expect(await controller.findAll(response, queryParams)).toEqual([user]);
     });
 
     it('should call the method and return the errors', async () => {
@@ -168,7 +164,6 @@ describe('BooksController', () => {
         .mockResolvedValueOnce(file);
 
       const response = mockResponse();
-
       const id = faker.string.uuid();
 
       await controller.getPhoto(id, response);
@@ -198,7 +193,6 @@ describe('BooksController', () => {
       jest.spyOn(controller, 'getPhoto').mockResolvedValueOnce(file);
 
       const response = mockResponse();
-
       const id = faker.string.uuid();
 
       expect(await controller.getPhoto(id, response)).toEqual(file);
@@ -208,7 +202,6 @@ describe('BooksController', () => {
       jest.spyOn(controller, 'getPhoto').mockRejectedValueOnce(new Error());
 
       const response = mockResponse();
-
       const id = faker.string.uuid();
 
       expect(controller.getPhoto(id, response)).rejects.toThrow(new Error());
@@ -217,11 +210,11 @@ describe('BooksController', () => {
 
   describe('findOne', () => {
     it('must call the method and return the correct parameters', async () => {
-      const book = mockReadBookDto();
+      const user = mockReadUserDto();
 
       const findSpy = jest
         .spyOn(controller, 'findOne')
-        .mockResolvedValueOnce(book);
+        .mockResolvedValueOnce(user);
 
       const id = faker.string.uuid();
 
@@ -231,11 +224,11 @@ describe('BooksController', () => {
     });
 
     it('should call the method and return invalid parameters', async () => {
-      const book = mockReadBookDto();
+      const user = mockReadUserDto();
 
       const findSpy = jest
         .spyOn(controller, 'findOne')
-        .mockResolvedValueOnce(book);
+        .mockResolvedValueOnce(user);
 
       await controller.findOne(null);
 
@@ -245,13 +238,13 @@ describe('BooksController', () => {
     });
 
     it('should call the method and return the result', async () => {
-      const book = mockReadBookDto();
+      const user = mockReadUserDto();
 
-      jest.spyOn(controller, 'findOne').mockResolvedValueOnce(book);
+      jest.spyOn(controller, 'findOne').mockResolvedValueOnce(user);
 
       const id = faker.string.uuid();
 
-      expect(await controller.findOne(id)).toEqual(book);
+      expect(await controller.findOne(id)).toEqual(user);
     });
 
     it('should call the method and return the errors', async () => {
@@ -265,23 +258,23 @@ describe('BooksController', () => {
 
   describe('update', () => {
     it('must call the method and return the correct parameters', async () => {
-      const result = mockReadBookDto();
+      const result = mockReadUserDto();
 
       const findSpy = jest
         .spyOn(controller, 'update')
         .mockResolvedValueOnce(result);
 
-      const book = mockUpdateBookDto();
+      const user = mockUpdateUserDto();
       const photo = mockFileMulter();
       const id = faker.string.uuid();
 
-      await controller.update(id, book, photo);
+      await controller.update(id, user, photo);
 
-      expect(findSpy).toHaveBeenCalledWith(id, book, photo);
+      expect(findSpy).toHaveBeenCalledWith(id, user, photo);
     });
 
     it('should call the method and return invalid parameters', async () => {
-      const result = mockReadBookDto();
+      const result = mockReadUserDto();
 
       const findSpy = jest
         .spyOn(controller, 'update')
@@ -289,43 +282,43 @@ describe('BooksController', () => {
 
       await controller.update(null, null, null);
 
-      const book = mockUpdateBookDto();
+      const user = mockUpdateUserDto();
       const photo = mockFileMulter();
       const id = faker.string.uuid();
 
-      expect(findSpy).not.toHaveBeenCalledWith(id, book, photo);
+      expect(findSpy).not.toHaveBeenCalledWith(id, user, photo);
     });
 
     it('should call the method and return the result', async () => {
-      const result = mockReadBookDto();
+      const result = mockReadUserDto();
 
       jest.spyOn(controller, 'update').mockResolvedValueOnce(result);
 
-      const book = mockUpdateBookDto();
+      const user = mockUpdateUserDto();
       const photo = mockFileMulter();
       const id = faker.string.uuid();
 
-      expect(await controller.update(id, book, photo)).toEqual(result);
+      expect(await controller.update(id, user, photo)).toEqual(result);
     });
 
     it('should call the method and return the errors', () => {
       jest.spyOn(controller, 'update').mockRejectedValueOnce(new Error());
 
-      const book = mockUpdateBookDto();
+      const user = mockUpdateUserDto();
       const photo = mockFileMulter();
       const id = faker.string.uuid();
 
-      expect(controller.update(id, book, photo)).rejects.toThrow(new Error());
+      expect(controller.update(id, user, photo)).rejects.toThrow(new Error());
     });
   });
 
   describe('disableOrActivate', () => {
     it('must call the method and return the correct parameters', async () => {
-      const book = mockReadBookDto();
+      const user = mockReadUserDto();
 
       const findSpy = jest
         .spyOn(controller, 'disableOrActivate')
-        .mockResolvedValueOnce(book);
+        .mockResolvedValueOnce(user);
 
       const id = faker.string.uuid();
 
@@ -335,11 +328,11 @@ describe('BooksController', () => {
     });
 
     it('should call the method and return invalid parameters', async () => {
-      const book = mockReadBookDto();
+      const user = mockReadUserDto();
 
       const findSpy = jest
         .spyOn(controller, 'disableOrActivate')
-        .mockResolvedValueOnce(book);
+        .mockResolvedValueOnce(user);
 
       await controller.disableOrActivate(null);
 
@@ -349,13 +342,13 @@ describe('BooksController', () => {
     });
 
     it('should call the method and return the result', async () => {
-      const book = mockReadBookDto();
+      const user = mockReadUserDto();
 
-      jest.spyOn(controller, 'disableOrActivate').mockResolvedValueOnce(book);
+      jest.spyOn(controller, 'disableOrActivate').mockResolvedValueOnce(user);
 
       const id = faker.string.uuid();
 
-      expect(await controller.disableOrActivate(id)).toEqual(book);
+      expect(await controller.disableOrActivate(id)).toEqual(user);
     });
 
     it('should call the method and return the errors', async () => {

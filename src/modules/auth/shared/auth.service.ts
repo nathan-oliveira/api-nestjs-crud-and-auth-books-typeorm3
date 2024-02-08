@@ -1,8 +1,7 @@
 import { Injectable, HttpException, HttpStatus, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
 
-import { UsersService } from 'src/modules/users/shared/users.service';
+import { compareHash } from 'src/common/utils/bcrypt';
 
 import {
   ValidateUserDto,
@@ -27,10 +26,6 @@ export class AuthService {
     private readonly redis: RedisService,
   ) {}
 
-  async compareHash(password: string, hash: string): Promise<boolean> {
-    return bcrypt.compare(password, hash);
-  }
-
   async validateUser(
     username: string,
     password: string,
@@ -51,7 +46,7 @@ export class AuthService {
       );
     }
 
-    const passwordIsValid = await this.compareHash(password, user.password);
+    const passwordIsValid = await compareHash(password, user.password);
     if (!passwordIsValid) {
       throw new HttpException(
         'Invalid username and/or password. Please try again!',

@@ -6,10 +6,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 
+import { IUserUseCases } from 'src/modules/users/usecases/user.use-cases';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
-
 import { BaseService } from 'src/common/base/base.service';
 
 import {
@@ -24,7 +23,8 @@ import {
   removeImageStorage,
   updateImageStorage,
 } from 'src/common/base/utils/storage';
-import { IUserUseCases } from '../usecases/user.use-cases';
+
+import { convertToHash } from 'src/common/utils/bcrypt';
 
 @Injectable()
 export class UsersService
@@ -36,11 +36,6 @@ export class UsersService
     private readonly userRepository: Repository<UserEntity>,
   ) {
     super(userRepository, { filters: ['name', 'email', 'username'] });
-  }
-
-  async convertToHash(password: string): Promise<string> {
-    if (!password) return;
-    return bcrypt.hash(password, 8);
   }
 
   async findUserByUserName(username: string): Promise<ReadUserDto> {
@@ -80,7 +75,7 @@ export class UsersService
     try {
       await this.verifyExistUser(createUserDto);
 
-      const password = await this.convertToHash(createUserDto.password);
+      const password = await convertToHash(createUserDto.password);
       return await this.create({
         ...createUserDto,
         password,
@@ -102,7 +97,7 @@ export class UsersService
       if (!user) throw new NotFoundException('Register not found.');
       if (imagePath) user.photo = updateImageStorage(imagePath, user.photo);
 
-      const password = await this.convertToHash(updateUserDto.password);
+      const password = await convertToHash(updateUserDto.password);
       if (password) user.password = password;
       return await this.repository.save(user);
     } catch (error) {
