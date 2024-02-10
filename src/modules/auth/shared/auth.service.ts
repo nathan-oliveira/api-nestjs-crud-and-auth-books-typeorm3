@@ -17,8 +17,10 @@ import {
   IUserUseCases,
 } from 'src/modules/users/usecases/user.use-cases';
 
+import { IAuthUseCases } from '../usecases/auth.use-cases';
+
 @Injectable()
-export class AuthService {
+export class AuthService implements IAuthUseCases {
   constructor(
     @Inject(IUserUseCasesType)
     private readonly usersService: IUserUseCases,

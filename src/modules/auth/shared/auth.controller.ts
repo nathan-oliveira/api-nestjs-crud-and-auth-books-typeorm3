@@ -6,6 +6,7 @@ import {
   Request,
   UseInterceptors,
   ClassSerializerInterceptor,
+  Inject,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Request as RequestExpress } from 'express';
@@ -18,16 +19,20 @@ import {
   ReadLoginUserDto,
 } from 'src/modules/auth/dtos';
 
-import { AuthService } from './auth.service';
 import { Rule } from 'src/modules/auth/enums/rule.enum';
 import { LocalAuthGuard } from './local/local-auth.guard';
 import { JwtAuth } from 'src/common/decorators/jwt-auth.decorator';
+
+import { IAuthUseCasesType, IAuthUseCases } from '../usecases/auth.use-cases';
 
 @ApiTags('Auth')
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    @Inject(IAuthUseCasesType)
+    private readonly authService: IAuthUseCases,
+  ) {}
 
   @Post('signup')
   async create(@Body() createAuthDto: CreateAuthDto): Promise<ReadAuthDto> {

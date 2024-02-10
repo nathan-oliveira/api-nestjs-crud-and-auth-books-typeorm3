@@ -228,7 +228,7 @@ describe('BooksService', () => {
       jest.spyOn(service, 'getPhoto').mockRejectedValueOnce(new Error());
 
       const id = faker.string.uuid();
-      
+
       expect(service.getPhoto(id)).rejects.toThrow(new Error());
     });
   });
