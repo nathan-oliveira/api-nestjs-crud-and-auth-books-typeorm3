@@ -43,8 +43,8 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req: RequestExpress): Promise<ReadLoginUserDto> {
-    const user = req.user as LoginUserDto;
-    const result = await this.authService.login(user);
+    const { id, active, rule } = req.user as LoginUserDto;
+    const result = await this.authService.login({ id, active, rule });
     return plainToClass(ReadLoginUserDto, result);
   }
 

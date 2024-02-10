@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
@@ -6,6 +7,7 @@ import { AuthService } from './auth.service';
 import { UsersService } from 'src/modules/users/shared/users.service';
 import { RedisService } from 'src/config/redis.config';
 
+import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { IAuthUseCasesType, IAuthUseCases } from '../usecases/auth.use-cases';
 import {
   IUserUseCasesType,
@@ -22,9 +24,6 @@ import {
   mockRedisService,
   mockMethodsRepository,
 } from 'src/../test/mock';
-
-import { UserEntity } from 'src/modules/users/entities/user.entity';
-import { faker } from '@faker-js/faker';
 
 describe('AuthService', () => {
   let authService: IAuthUseCases;

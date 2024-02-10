@@ -15,7 +15,6 @@ import {
   mockQueryParams,
   mockReadUserDto,
   mockStealableFile,
-  mockRequest,
   mockResponse,
   mockUpdateUserDto,
 } from 'src/../test/mock';
