@@ -15,9 +15,9 @@ import { RedisService } from 'src/config/redis.config';
 import {
   IUserServiceType,
   IUserService,
-} from 'src/modules/users/interfaces/user.interface';
+} from 'src/modules/users/interfaces/user-service.interface';
 
-import { IAuthService } from '../interfaces/auth.interface';
+import { IAuthService } from '../interfaces/auth-service.interface';
 
 @Injectable()
 export class AuthService implements IAuthService {

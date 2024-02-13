@@ -24,7 +24,7 @@ import { ReadProfileDto, UpdateProfileDto } from 'src/modules/profile/dtos';
 import {
   IUserServiceType,
   IUserService,
-} from 'src/modules/users/interfaces/user.interface';
+} from 'src/modules/users/interfaces/user-service.interface';
 
 @ApiTags('Profile')
 @JwtAuth(Rule.USER, Rule.ADMIN)

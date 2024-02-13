@@ -32,7 +32,7 @@ import {
   UpdateBookDto,
 } from 'src/modules/books/dtos';
 
-import { IBookUseCases, IBookUseCasesType } from '../interfaces/book.use-cases';
+import { IBookService, IBookServiceType } from '../interfaces/book-service.interface';
 import { MulterMiddleware } from 'src/common/middlewares/multer.middleware';
 
 @ApiTags('Books')
@@ -41,8 +41,8 @@ import { MulterMiddleware } from 'src/common/middlewares/multer.middleware';
 @UseInterceptors(ClassSerializerInterceptor)
 export class BooksController {
   constructor(
-    @Inject(IBookUseCasesType)
-    private readonly booksService: IBookUseCases,
+    @Inject(IBookServiceType)
+    private readonly booksService: IBookService,
   ) {}
 
   @Post()

@@ -31,7 +31,7 @@ import {
   UpdateUserDto,
 } from 'src/modules/users/dtos';
 
-import { IUserServiceType, IUserService } from '../interfaces/user.interface';
+import { IUserServiceType, IUserService } from '../interfaces/user-service.interface';
 import { MulterMiddleware } from 'src/common/middlewares/multer.middleware';
 
 @ApiTags('Users')

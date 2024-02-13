@@ -7,7 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { IUserService } from 'src/modules/users/interfaces/user.interface';
+import { IUserService } from 'src/modules/users/interfaces/user-service.interface';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { BaseService } from 'src/common/base/base.service';
 

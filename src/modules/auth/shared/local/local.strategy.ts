@@ -7,7 +7,7 @@ import { ValidateUserDto } from 'src/modules/auth/dtos';
 import {
   IAuthService,
   IAuthServiceType,
-} from '../../interfaces/auth.interface';
+} from '../../interfaces/auth-service.interface';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {

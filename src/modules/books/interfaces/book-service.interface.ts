@@ -7,9 +7,9 @@ import {
   UpdateBookDto,
 } from '../dtos';
 
-export const IBookUseCasesType = 'IBookUseCasesType';
+export const IBookServiceType = 'IBookServiceType';
 
-export interface IBookUseCases extends IBaseService {
+export interface IBookService extends IBaseService {
   createAndUpload: (
     createBookDto: CreateBookDto,
     imagePath: string,

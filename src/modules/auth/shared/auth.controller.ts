@@ -23,7 +23,7 @@ import { Rule } from 'src/modules/auth/enums/rule.enum';
 import { LocalAuthGuard } from './local/local-auth.guard';
 import { JwtAuth } from 'src/common/decorators/jwt-auth.decorator';
 
-import { IAuthServiceType, IAuthService } from '../interfaces/auth.interface';
+import { IAuthServiceType, IAuthService } from '../interfaces/auth-service.interface';
 
 @ApiTags('Auth')
 @Controller('auth')

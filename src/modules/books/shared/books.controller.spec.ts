@@ -6,7 +6,7 @@ import { BooksController } from './books.controller';
 import { BooksService } from './books.service';
 import { BookEntity } from 'src/modules/books/entities/book.entity';
 
-import { IBookUseCasesType, IBookUseCases } from '../interfaces/book.use-cases';
+import { IBookServiceType, IBookService } from '../interfaces/book-service.interface';
 
 import {
   mockCreateBookDto,
@@ -22,14 +22,14 @@ import {
 
 describe('BooksController', () => {
   let controller: BooksController;
-  let service: IBookUseCases;
+  let service: IBookService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [BooksController],
       providers: [
         {
-          provide: IBookUseCasesType,
+          provide: IBookServiceType,
           useClass: BooksService,
         },
         {
@@ -41,7 +41,7 @@ describe('BooksController', () => {
     }).compile();
 
     controller = module.get<BooksController>(BooksController);
-    service = module.get<IBookUseCases>(IBookUseCasesType);
+    service = module.get<IBookService>(IBookServiceType);
   });
 
   it('controller must be defined', () => {

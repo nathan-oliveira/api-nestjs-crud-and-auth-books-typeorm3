@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker';
 import { BooksService } from './books.service';
 import { BookEntity } from 'src/modules/books/entities/book.entity';
 
-import { IBookUseCasesType, IBookUseCases } from '../interfaces/book.use-cases';
+import { IBookServiceType, IBookService } from '../interfaces/book-service.interface';
 
 import {
   mockCreateBookDto,
@@ -16,13 +16,13 @@ import {
 } from 'src/../test/mock';
 
 describe('BooksService', () => {
-  let service: IBookUseCases;
+  let service: IBookService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: IBookUseCasesType,
+          provide: IBookServiceType,
           useClass: BooksService,
         },
         {
@@ -33,7 +33,7 @@ describe('BooksService', () => {
       imports: [BookEntity],
     }).compile();
 
-    service = module.get<IBookUseCases>(IBookUseCasesType);
+    service = module.get<IBookService>(IBookServiceType);
   });
 
   it('should be defined', () => {

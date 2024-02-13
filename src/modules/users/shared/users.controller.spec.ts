@@ -6,7 +6,7 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 
-import { IUserServiceType, IUserService } from '../interfaces/user.interface';
+import { IUserServiceType, IUserService } from '../interfaces/user-service.interface';
 
 import {
   mockCreateUserDto,

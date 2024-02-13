@@ -8,11 +8,11 @@ import { UsersService } from 'src/modules/users/shared/users.service';
 import { RedisService } from 'src/config/redis.config';
 
 import { UserEntity } from 'src/modules/users/entities/user.entity';
-import { IAuthServiceType, IAuthService } from '../interfaces/auth.interface';
+import { IAuthServiceType, IAuthService } from '../interfaces/auth-service.interface';
 import {
   IUserServiceType,
   IUserService,
-} from 'src/modules/users/interfaces/user.interface';
+} from 'src/modules/users/interfaces/user-service.interface';
 
 import {
   mockReadUserDto,
