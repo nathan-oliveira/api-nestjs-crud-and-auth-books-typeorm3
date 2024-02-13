@@ -32,7 +32,7 @@ import {
   UpdateBookDto,
 } from 'src/modules/books/dtos';
 
-import { IBookUseCases, IBookUseCasesType } from '../usecases/book.use-cases';
+import { IBookUseCases, IBookUseCasesType } from '../interfaces/book.use-cases';
 import { MulterMiddleware } from 'src/common/middlewares/multer.middleware';
 
 @ApiTags('Books')

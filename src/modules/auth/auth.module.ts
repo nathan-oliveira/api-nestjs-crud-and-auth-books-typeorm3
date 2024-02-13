@@ -11,7 +11,7 @@ import { AuthController } from './shared/auth.controller';
 import { AuthService } from './shared/auth.service';
 import { LocalStrategy } from './shared/local/local.strategy';
 import { JwtStrategy } from './shared/jwt/jwt.strategy';
-import { IAuthUseCasesType } from './usecases/auth.use-cases';
+import { IAuthServiceType } from './interfaces/auth.interface';
 
 @Module({
   imports: [
@@ -26,7 +26,7 @@ import { IAuthUseCasesType } from './usecases/auth.use-cases';
   controllers: [AuthController],
   providers: [
     RedisService,
-    { provide: IAuthUseCasesType, useClass: AuthService },
+    { provide: IAuthServiceType, useClass: AuthService },
     LocalStrategy,
     JwtStrategy,
   ],

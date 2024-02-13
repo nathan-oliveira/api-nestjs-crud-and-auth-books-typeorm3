@@ -5,11 +5,13 @@ import {
   ReadLoginUserDto,
 } from 'src/modules/auth/dtos';
 
+import { IBaseService } from 'src/common/base/base.interface';
+
 import { ReadUserDto } from 'src/modules/users/dtos';
 
-export const IAuthUseCasesType = 'IAuthUseCasesType';
+export const IAuthServiceType = 'IAuthServiceType';
 
-export class IAuthUseCases {
+export interface IAuthService {
   validateUser: (
     username: string,
     password: string,

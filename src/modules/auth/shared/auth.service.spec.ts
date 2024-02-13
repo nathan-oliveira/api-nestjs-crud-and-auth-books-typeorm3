@@ -8,11 +8,11 @@ import { UsersService } from 'src/modules/users/shared/users.service';
 import { RedisService } from 'src/config/redis.config';
 
 import { UserEntity } from 'src/modules/users/entities/user.entity';
-import { IAuthUseCasesType, IAuthUseCases } from '../usecases/auth.use-cases';
+import { IAuthServiceType, IAuthService } from '../interfaces/auth.interface';
 import {
-  IUserUseCasesType,
-  IUserUseCases,
-} from 'src/modules/users/usecases/user.use-cases';
+  IUserServiceType,
+  IUserService,
+} from 'src/modules/users/interfaces/user.interface';
 
 import {
   mockReadUserDto,
@@ -26,14 +26,14 @@ import {
 } from 'src/../test/mock';
 
 describe('AuthService', () => {
-  let authService: IAuthUseCases;
-  let usersService: IUserUseCases;
+  let authService: IAuthService;
+  let usersService: IUserService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        { provide: IAuthUseCasesType, useClass: AuthService },
-        { provide: IUserUseCasesType, useClass: UsersService },
+        { provide: IAuthServiceType, useClass: AuthService },
+        { provide: IUserServiceType, useClass: UsersService },
         {
           provide: JwtService,
           useValue: mockJwtService(),
@@ -50,8 +50,8 @@ describe('AuthService', () => {
       imports: [UserEntity],
     }).compile();
 
-    authService = module.get<IAuthUseCases>(IAuthUseCasesType);
-    usersService = module.get<IUserUseCases>(IUserUseCasesType);
+    authService = module.get<IAuthService>(IAuthServiceType);
+    usersService = module.get<IUserService>(IUserServiceType);
   });
 
   it('should be defined', () => {

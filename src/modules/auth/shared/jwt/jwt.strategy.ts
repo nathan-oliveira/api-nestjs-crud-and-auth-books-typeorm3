@@ -6,15 +6,15 @@ import { RedisService } from 'src/config/redis.config';
 
 import { JwtPayloadDto } from 'src/modules/auth/dtos';
 import {
-  IAuthUseCases,
-  IAuthUseCasesType,
-} from '../../usecases/auth.use-cases';
+  IAuthService,
+  IAuthServiceType,
+} from '../../interfaces/auth.interface';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @Inject(IAuthUseCasesType)
-    private readonly authService: IAuthUseCases,
+    @Inject(IAuthServiceType)
+    private readonly authService: IAuthService,
     private readonly redis: RedisService,
   ) {
     const configService = new ConfigService();

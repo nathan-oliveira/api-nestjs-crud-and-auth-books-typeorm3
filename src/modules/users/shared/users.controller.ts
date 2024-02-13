@@ -31,7 +31,7 @@ import {
   UpdateUserDto,
 } from 'src/modules/users/dtos';
 
-import { IUserUseCasesType, IUserUseCases } from '../usecases/user.use-cases';
+import { IUserServiceType, IUserService } from '../interfaces/user.interface';
 import { MulterMiddleware } from 'src/common/middlewares/multer.middleware';
 
 @ApiTags('Users')
@@ -40,8 +40,8 @@ import { MulterMiddleware } from 'src/common/middlewares/multer.middleware';
 @UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
   constructor(
-    @Inject(IUserUseCasesType)
-    private readonly usersService: IUserUseCases,
+    @Inject(IUserServiceType)
+    private readonly usersService: IUserService,
   ) {}
 
   @Post()

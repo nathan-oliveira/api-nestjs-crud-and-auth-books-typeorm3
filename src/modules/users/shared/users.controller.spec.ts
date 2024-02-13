@@ -6,7 +6,7 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 
-import { IUserUseCasesType, IUserUseCases } from '../usecases/user.use-cases';
+import { IUserServiceType, IUserService } from '../interfaces/user.interface';
 
 import {
   mockCreateUserDto,
@@ -21,14 +21,14 @@ import {
 
 describe('UsersController', () => {
   let controller: UsersController;
-  let service: IUserUseCases;
+  let service: IUserService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
       providers: [
         {
-          provide: IUserUseCasesType,
+          provide: IUserServiceType,
           useClass: UsersService,
         },
         {
@@ -40,7 +40,7 @@ describe('UsersController', () => {
     }).compile();
 
     controller = module.get<UsersController>(UsersController);
-    service = module.get<IUserUseCases>(IUserUseCasesType);
+    service = module.get<IUserService>(IUserServiceType);
   });
 
   it('controller must be defined', () => {

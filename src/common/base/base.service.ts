@@ -3,7 +3,7 @@ import { Repository, DeepPartial, FindOptionsWhere } from 'typeorm';
 import { createReadStream } from 'fs';
 import * as fs from 'fs';
 
-import { IBaseUseCases } from 'src/common/base/base.use-cases';
+import { IBaseService } from 'src/common/base/base.interface';
 import { AppEntity } from 'src/common/base/entities/app.entity';
 
 import { QueryParamsDto } from 'src/common/base/dtos/query-params.dto';
@@ -19,7 +19,7 @@ import { serializeRangeDates } from './utils/serialize-range-dates';
 
 @Injectable()
 export abstract class BaseService<TEntity extends AppEntity>
-  implements IBaseUseCases
+  implements IBaseService
 {
   constructor(
     readonly repository: Repository<TEntity>,

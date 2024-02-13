@@ -5,15 +5,15 @@ import { Strategy } from 'passport-local';
 import { AuthService } from 'src/modules/auth/shared/auth.service';
 import { ValidateUserDto } from 'src/modules/auth/dtos';
 import {
-  IAuthUseCases,
-  IAuthUseCasesType,
-} from '../../usecases/auth.use-cases';
+  IAuthService,
+  IAuthServiceType,
+} from '../../interfaces/auth.interface';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @Inject(IAuthUseCasesType)
-    private readonly authService: IAuthUseCases,
+    @Inject(IAuthServiceType)
+    private readonly authService: IAuthService,
   ) {
     super({
       usernameField: 'username',

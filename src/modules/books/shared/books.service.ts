@@ -16,7 +16,7 @@ import {
   removeImageStorage,
   updateImageStorage,
 } from 'src/common/base/utils/storage';
-import { IBookUseCases } from '../usecases/book.use-cases';
+import { IBookUseCases } from '../interfaces/book.use-cases';
 
 @Injectable()
 export class BooksService

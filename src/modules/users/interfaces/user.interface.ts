@@ -1,11 +1,11 @@
 import { ReadPhotoDto } from 'src/modules/books/dtos';
-import { IBaseUseCases } from 'src/common/base/base.use-cases';
+import { IBaseService } from 'src/common/base/base.interface';
 
 import { CreateUserDto, ReadUserDto, UpdateUserDto } from '../dtos';
 
-export const IUserUseCasesType = 'IUserUseCasesType';
+export const IUserServiceType = 'IUserServiceType';
 
-export class IUserUseCases extends IBaseUseCases {
+export interface IUserService extends IBaseService {
   findUserByUserName: (username: string) => Promise<ReadUserDto>;
 
   verifyExistUser: (data: CreateUserDto | UpdateUserDto) => Promise<void>;

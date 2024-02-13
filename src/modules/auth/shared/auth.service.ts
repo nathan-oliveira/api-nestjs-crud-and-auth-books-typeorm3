@@ -13,17 +13,17 @@ import {
 import { CreateUserDto, ReadUserDto } from 'src/modules/users/dtos';
 import { RedisService } from 'src/config/redis.config';
 import {
-  IUserUseCasesType,
-  IUserUseCases,
-} from 'src/modules/users/usecases/user.use-cases';
+  IUserServiceType,
+  IUserService,
+} from 'src/modules/users/interfaces/user.interface';
 
-import { IAuthUseCases } from '../usecases/auth.use-cases';
+import { IAuthService } from '../interfaces/auth.interface';
 
 @Injectable()
-export class AuthService implements IAuthUseCases {
+export class AuthService implements IAuthService {
   constructor(
-    @Inject(IUserUseCasesType)
-    private readonly usersService: IUserUseCases,
+    @Inject(IUserServiceType)
+    private readonly usersService: IUserService,
     private readonly jwtService: JwtService,
     private readonly redis: RedisService,
   ) {}

@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker';
 import { UsersService } from './users.service';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 
-import { IUserUseCasesType, IUserUseCases } from '../usecases/user.use-cases';
+import { IUserServiceType, IUserService } from '../interfaces/user.interface';
 
 import {
   mockCreateUserDto,
@@ -16,13 +16,13 @@ import {
 } from 'src/../test/mock';
 
 describe('UsersService', () => {
-  let service: IUserUseCases;
+  let service: IUserService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: IUserUseCasesType,
+          provide: IUserServiceType,
           useClass: UsersService,
         },
         {
@@ -33,7 +33,7 @@ describe('UsersService', () => {
       imports: [UserEntity],
     }).compile();
 
-    service = module.get<IUserUseCases>(IUserUseCasesType);
+    service = module.get<IUserService>(IUserServiceType);
   });
 
   it('should be defined', () => {

@@ -22,9 +22,9 @@ import { MulterMiddleware } from 'src/common/middlewares/multer.middleware';
 
 import { ReadProfileDto, UpdateProfileDto } from 'src/modules/profile/dtos';
 import {
-  IUserUseCasesType,
-  IUserUseCases,
-} from 'src/modules/users/usecases/user.use-cases';
+  IUserServiceType,
+  IUserService,
+} from 'src/modules/users/interfaces/user.interface';
 
 @ApiTags('Profile')
 @JwtAuth(Rule.USER, Rule.ADMIN)
@@ -32,8 +32,8 @@ import {
 @UseInterceptors(ClassSerializerInterceptor)
 export class ProfileController {
   constructor(
-    @Inject(IUserUseCasesType)
-    private readonly usersService: IUserUseCases,
+    @Inject(IUserServiceType)
+    private readonly usersService: IUserService,
   ) {}
 
   @Get()

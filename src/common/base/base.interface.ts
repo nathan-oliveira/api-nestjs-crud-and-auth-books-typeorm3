@@ -1,11 +1,12 @@
 import { DeepPartial } from 'typeorm';
 
-import { Pagination } from './paginate';
-import { QueryParamsDto } from './dtos/query-params.dto';
 import { ReadPhotoDto } from 'src/common/base/dtos/read-photo.dto';
+import { QueryParamsDto } from './dtos/query-params.dto';
+import { Pagination } from './paginate';
+
 import { AppEntity } from './entities/app.entity';
 
-export class IBaseUseCases {
+export interface IBaseService {
   findByPaginate: (
     queryParams: QueryParamsDto,
     conditions?: Array<object>,

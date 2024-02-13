@@ -7,7 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { IUserUseCases } from 'src/modules/users/usecases/user.use-cases';
+import { IUserService } from 'src/modules/users/interfaces/user.interface';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { BaseService } from 'src/common/base/base.service';
 
@@ -29,7 +29,7 @@ import { convertToHash } from 'src/common/utils/bcrypt';
 @Injectable()
 export class UsersService
   extends BaseService<UserEntity>
-  implements IUserUseCases
+  implements IUserService
 {
   constructor(
     @InjectRepository(UserEntity)

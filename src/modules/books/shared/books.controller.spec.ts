@@ -6,7 +6,7 @@ import { BooksController } from './books.controller';
 import { BooksService } from './books.service';
 import { BookEntity } from 'src/modules/books/entities/book.entity';
 
-import { IBookUseCasesType, IBookUseCases } from '../usecases/book.use-cases';
+import { IBookUseCasesType, IBookUseCases } from '../interfaces/book.use-cases';
 
 import {
   mockCreateBookDto,

@@ -23,15 +23,15 @@ import { Rule } from 'src/modules/auth/enums/rule.enum';
 import { LocalAuthGuard } from './local/local-auth.guard';
 import { JwtAuth } from 'src/common/decorators/jwt-auth.decorator';
 
-import { IAuthUseCasesType, IAuthUseCases } from '../usecases/auth.use-cases';
+import { IAuthServiceType, IAuthService } from '../interfaces/auth.interface';
 
 @ApiTags('Auth')
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
   constructor(
-    @Inject(IAuthUseCasesType)
-    private readonly authService: IAuthUseCases,
+    @Inject(IAuthServiceType)
+    private readonly authService: IAuthService,
   ) {}
 
   @Post('signup')

@@ -1,4 +1,4 @@
-import { IBaseUseCases } from 'src/common/base/base.use-cases';
+import { IBaseService } from 'src/common/base/base.interface';
 
 import {
   CreateBookDto,
@@ -9,7 +9,7 @@ import {
 
 export const IBookUseCasesType = 'IBookUseCasesType';
 
-export class IBookUseCases extends IBaseUseCases {
+export interface IBookUseCases extends IBaseService {
   createAndUpload: (
     createBookDto: CreateBookDto,
     imagePath: string,
