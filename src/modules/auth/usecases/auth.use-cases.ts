@@ -5,7 +5,7 @@ import {
   ReadLoginUserDto,
 } from 'src/modules/auth/dtos';
 
-import { CreateUserDto, ReadUserDto } from 'src/modules/users/dtos';
+import { ReadUserDto } from 'src/modules/users/dtos';
 
 export const IAuthUseCasesType = 'IAuthUseCasesType';
 
