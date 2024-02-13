@@ -32,7 +32,10 @@ import {
   UpdateBookDto,
 } from 'src/modules/books/dtos';
 
-import { IBookService, IBookServiceType } from '../interfaces/book-service.interface';
+import {
+  IBookService,
+  IBookServiceType,
+} from '../interfaces/book-service.interface';
 import { MulterMiddleware } from 'src/common/middlewares/multer.middleware';
 
 @ApiTags('Books')
