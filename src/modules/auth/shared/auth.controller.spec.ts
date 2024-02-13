@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { faker } from '@faker-js/faker';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -17,8 +16,6 @@ import {
 
 import {
   mockReadUserDto,
-  mockValidateUser,
-  mockLoginUserDto,
   mockCreateUserAuthDto,
   mockJwtService,
   mockLogin,
