@@ -3,7 +3,7 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 import { ConfigService } from '@nestjs/config';
 
 class CorsConfig {
-  private readonly exposedHeaders: [
+  private readonly exposedHeaders = [
     'X-Total-Items',
     'X-Total-Pages',
     'X-Current-Page',
@@ -19,7 +19,7 @@ class CorsConfig {
       return { exposedHeaders: this.exposedHeaders };
     } else {
       const domains = this.configService.get<string>('CORS_RELEASED_DOMAINS');
-
+      console.log(domains);
       return {
         exposedHeaders: this.exposedHeaders,
         origin: function (origin, callback) {
