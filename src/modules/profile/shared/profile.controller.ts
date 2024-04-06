@@ -6,18 +6,20 @@ import {
   UploadedFile,
   Get,
   Put,
-  Req,
+  Res,
   Patch,
   Delete,
   Inject,
+  StreamableFile as StealableFile,
 } from '@nestjs/common';
-import { Request, Express } from 'express';
+import { Response, Express } from 'express';
 import { plainToClass } from 'class-transformer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 import { Rule } from 'src/modules/auth/enums/rule.enum';
 import { JwtAuth } from 'src/common/decorators/jwt-auth.decorator';
+import { UserAuth } from 'src/common/decorators/user-auth.decorator';
 import { MulterMiddleware } from 'src/common/middlewares/multer.middleware';
 
 import { ReadProfileDto, UpdateProfileDto } from 'src/modules/profile/dtos';
@@ -25,6 +27,7 @@ import {
   IUserServiceType,
   IUserService,
 } from 'src/modules/users/interfaces/user-service.interface';
+import { LoginUserDto } from 'src/modules/auth/dtos';
 
 @ApiTags('Profile')
 @JwtAuth(Rule.USER, Rule.ADMIN)
@@ -38,10 +41,19 @@ export class ProfileController {
 
   @Get()
   @ApiOkResponse({ type: ReadProfileDto })
-  async profile(@Req() req: Request): Promise<ReadProfileDto> {
-    const { id } = <any>req.user;
+  async profile(@UserAuth() { id }: LoginUserDto): Promise<ReadProfileDto> {
     const user = await this.usersService.findById(id);
     return plainToClass(ReadProfileDto, user);
+  }
+
+  @Get('photo')
+  async getPhoto(
+    @UserAuth() { id }: LoginUserDto,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<StealableFile> {
+    const { file, mimetype } = await this.usersService.getPhoto(id);
+    res.set({ 'Content-Type': mimetype });
+    return new StealableFile(file);
   }
 
   @Put()
@@ -50,12 +62,10 @@ export class ProfileController {
     FileInterceptor('file', MulterMiddleware.getStorage({ folder: 'profile' })),
   )
   async update(
-    @Req() req: Request,
+    @UserAuth() { id }: LoginUserDto,
     @Body() updateProfile: UpdateProfileDto,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<ReadProfileDto> {
-    const { id } = <any>req.user;
-
     const result = await this.usersService.updateAndUpload(
       id,
       updateProfile,
@@ -67,16 +77,14 @@ export class ProfileController {
 
   @Patch()
   @ApiOkResponse({ type: ReadProfileDto })
-  async disableAccount(@Req() req: Request) {
-    const { id } = <any>req.user;
+  async disableAccount(@UserAuth() { id }: LoginUserDto) {
     const user = await this.usersService.disableOrActivate(id);
     return plainToClass(ReadProfileDto, user);
   }
 
   @Delete(':id/photo')
   @ApiNoContentResponse()
-  async removePhoto(@Req() req: Request): Promise<void> {
-    const { id } = <any>req.user;
+  async removePhoto(@UserAuth() { id }: LoginUserDto): Promise<void> {
     return await this.usersService.removePhoto(id);
   }
 }

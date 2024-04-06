@@ -5,7 +5,10 @@ import { faker } from '@faker-js/faker';
 import { BooksService } from './books.service';
 import { BookEntity } from 'src/modules/books/entities/book.entity';
 
-import { IBookServiceType, IBookService } from '../interfaces/book-service.interface';
+import {
+  IBookServiceType,
+  IBookService,
+} from '../interfaces/book-service.interface';
 
 import {
   mockCreateBookDto,

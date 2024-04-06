@@ -3,13 +3,11 @@ import {
   Post,
   Body,
   UseGuards,
-  Request,
   UseInterceptors,
   ClassSerializerInterceptor,
   Inject,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Request as RequestExpress } from 'express';
 import { plainToClass } from 'class-transformer';
 
 import {
@@ -20,8 +18,10 @@ import {
 } from 'src/modules/auth/dtos';
 
 import { Rule } from 'src/modules/auth/enums/rule.enum';
-import { LocalAuthGuard } from './local/local-auth.guard';
 import { JwtAuth } from 'src/common/decorators/jwt-auth.decorator';
+import { UserAuth } from 'src/common/decorators/user-auth.decorator';
+
+import { LocalAuthGuard } from './local/local-auth.guard';
 
 import {
   IAuthServiceType,
@@ -45,18 +45,14 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req: RequestExpress): Promise<ReadLoginUserDto> {
-    const { id, active, rule } = req.user as LoginUserDto;
-    const result = await this.authService.login({ id, active, rule });
+  async login(@UserAuth() user: LoginUserDto): Promise<ReadLoginUserDto> {
+    const result = await this.authService.login(user);
     return plainToClass(ReadLoginUserDto, result);
   }
 
   @JwtAuth(Rule.USER, Rule.ADMIN)
   @Post('logout')
-  async logout(@Request() req: RequestExpress): Promise<void> {
-    // const authHeader = req.headers.authorization;
-    // const [, token] = authHeader.split(' ');
-    const user = req.user as LoginUserDto;
-    return this.authService.logout(user.id);
+  async logout(@UserAuth() { id }: LoginUserDto): Promise<void> {
+    return this.authService.logout(id);
   }
 }

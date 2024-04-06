@@ -11,7 +11,6 @@ import {
   Delete,
   UploadedFile,
   Res,
-  Req,
   Query,
   StreamableFile as StealableFile,
 } from '@nestjs/common';
@@ -19,7 +18,7 @@ import {
 import { ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { plainToClass } from 'class-transformer';
-import { Request, Response, Express } from 'express';
+import { Response, Express } from 'express';
 
 import { Rule } from 'src/modules/auth/enums/rule.enum';
 import { JwtAuth } from 'src/common/decorators/jwt-auth.decorator';
@@ -37,6 +36,8 @@ import {
   IBookServiceType,
 } from '../interfaces/book-service.interface';
 import { MulterMiddleware } from 'src/common/middlewares/multer.middleware';
+import { UserAuth } from 'src/common/decorators/user-auth.decorator';
+import { LoginUserDto } from 'src/modules/auth/dtos';
 
 @ApiTags('Books')
 @JwtAuth(Rule.USER, Rule.ADMIN)
@@ -54,11 +55,10 @@ export class BooksController {
   )
   @ApiOkResponse({ type: ReadBookDto })
   async create(
-    @Req() req: Request,
+    @UserAuth() { id, rule }: LoginUserDto,
     @Body() createBookDto: CreateBookDto,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<ReadBookDto> {
-    const { id, rule } = <any>req.user;
     const userId = rule === Rule.ADMIN ? createBookDto.userId || id : id;
     const book = await this.booksService.createAndUpload(
       { ...createBookDto, userId },

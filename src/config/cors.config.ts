@@ -14,12 +14,10 @@ class CorsConfig {
 
   getConfig(): CorsOptions {
     const nodeEnv = this.configService.get<string>('NODE_ENV');
-    console.log(nodeEnv);
     if (nodeEnv === 'development') {
       return { exposedHeaders: this.exposedHeaders };
     } else {
       const domains = this.configService.get<string>('CORS_RELEASED_DOMAINS');
-      console.log(domains);
       return {
         exposedHeaders: this.exposedHeaders,
         origin: function (origin, callback) {

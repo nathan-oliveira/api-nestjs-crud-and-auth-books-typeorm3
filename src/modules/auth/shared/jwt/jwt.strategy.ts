@@ -33,6 +33,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       ? await this.authService.userIsDisabled(payload.sub)
       : true;
 
+    if (cachedPayload && userIsDisabled) await this.redis.del(payload.sub);
     if (!cachedPayload || userIsDisabled) throw new UnauthorizedException();
 
     return {
