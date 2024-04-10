@@ -1,7 +1,8 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { Request, Response, NextFunction } from 'express';
 import { ConfigService } from '@nestjs/config';
+import { Request, Response, NextFunction } from 'express';
+import helmet from 'helmet';
 // import * as bodyParser from 'body-parser';
 
 import CorsConfig from './cors.config';
@@ -25,7 +26,7 @@ export class AppConfig {
     this.enableCors();
     this.setGlobalConfigs();
     this.enableSwagger();
-    this.removeExpressFromResponse();
+    this.securityHelmet();
     return this.app;
   }
 
@@ -51,10 +52,38 @@ export class AppConfig {
 
   private enableSwagger = () => SwaggerConfig.handler(this.app);
 
-  private removeExpressFromResponse() {
-    this.app.use((req: Request, res: Response, next: NextFunction) => {
-      res.removeHeader('X-Powered-By');
-      next();
-    });
+  // private removeExpressFromResponse() {
+  //   this.app.use((req: Request, res: Response, next: NextFunction) => {
+  //     res.removeHeader('X-Powered-By');
+  //     next();
+  //   });
+  // }
+
+  private securityHelmet() {
+    // contentSecurityPolicy CSP ajuda a detectar e mitigar certos tipos de ataques, como XSS (Cross-Site Scripting) e data injection attacks.
+    this.app.use(
+      helmet({
+        contentSecurityPolicy: {
+          directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", 'cdnjs.cloudflare.com'],
+            objectSrc: ["'none'"],
+          },
+        },
+        frameguard: {
+          action: 'deny',
+        },
+        hsts: {
+          maxAge: 31536000, // Define o header Strict-Transport-Security para 1 ano
+          includeSubDomains: true,
+          preload: true,
+        },
+        dnsPrefetchControl: false, // Desativa o controle de prefetch de DNS
+        hidePoweredBy: true, // Remove o cabeçalho 'X-Powered-By'
+        ieNoOpen: true, // Define o header X-Download-Options para IE8+
+        noSniff: true, // Define o header X-Content-Type-Options para 'nosniff'
+        xssFilter: true, // Ativa o filtro XSS do navegador
+      }),
+    );
   }
 }

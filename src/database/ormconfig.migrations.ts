@@ -5,6 +5,8 @@ import { join } from 'path';
 
 const configService = new ConfigService({ env: env.config() });
 
+console.log(join(__dirname, '../modules/**/*.entity{.ts,.js}'))
+
 export default new DataSource({
   type: 'postgres',
   host: configService.get('DATABASE_HOST'),
@@ -16,6 +18,6 @@ export default new DataSource({
   synchronize: false,
   migrationsRun: true,
   logging: false,
-  entities: [join(__dirname, '../modules/**/*.entity{.ts,.js}')],
+  entities: [join(__dirname, '../modules/**/*.entity{.ts,.js}')], // fixme
   migrations: [__dirname + '/migrations/*{.ts,.js}'],
 });
