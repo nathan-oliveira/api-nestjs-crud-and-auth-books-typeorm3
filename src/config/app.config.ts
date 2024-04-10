@@ -1,9 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
-import { Request, Response, NextFunction } from 'express';
 import helmet from 'helmet';
-// import * as bodyParser from 'body-parser';
 
 import CorsConfig from './cors.config';
 import SwaggerConfig from './swagger.config';
@@ -46,21 +44,11 @@ export class AppConfig {
         transform: true,
       }),
     );
-    // this.app.use(bodyParser.json({ limit: '100mb' }));
-    // this.app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
   }
 
   private enableSwagger = () => SwaggerConfig.handler(this.app);
 
-  // private removeExpressFromResponse() {
-  //   this.app.use((req: Request, res: Response, next: NextFunction) => {
-  //     res.removeHeader('X-Powered-By');
-  //     next();
-  //   });
-  // }
-
   private securityHelmet() {
-    // contentSecurityPolicy CSP ajuda a detectar e mitigar certos tipos de ataques, como XSS (Cross-Site Scripting) e data injection attacks.
     this.app.use(
       helmet({
         contentSecurityPolicy: {
@@ -74,16 +62,28 @@ export class AppConfig {
           action: 'deny',
         },
         hsts: {
-          maxAge: 31536000, // Define o header Strict-Transport-Security para 1 ano
+          maxAge: 31536000,
           includeSubDomains: true,
           preload: true,
         },
-        dnsPrefetchControl: false, // Desativa o controle de prefetch de DNS
-        hidePoweredBy: true, // Remove o cabeçalho 'X-Powered-By'
-        ieNoOpen: true, // Define o header X-Download-Options para IE8+
-        noSniff: true, // Define o header X-Content-Type-Options para 'nosniff'
-        xssFilter: true, // Ativa o filtro XSS do navegador
+        dnsPrefetchControl: false,
+        hidePoweredBy: true,
+        ieNoOpen: true,
+        noSniff: true,
+        xssFilter: true,
       }),
     );
   }
 }
+
+/**
+ * Function securityHelmet
+ *
+ * @param contentSecurityPolicy     CSP ajuda a detectar e mitigar certos tipos de ataques, como XSS (Cross-Site Scripting) e data injection attacks.
+ * @param hsts                      Define o header Strict-Transport-Security para 1 ano
+ * @param dnsPrefetchControl        Desativa o controle de prefetch de DNS
+ * @param hidePoweredBy             Remove o cabeçalho 'X-Powered-By'
+ * @param ieNoOpen                  Define o header X-Download-Options para IE8+
+ * @param noSniff                   Define o header X-Content-Type-Options para 'nosniff'
+ * @param xssFilter                 Ativa o filtro XSS do navegador
+ */
