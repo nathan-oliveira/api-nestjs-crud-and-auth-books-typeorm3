@@ -35,4 +35,13 @@ export class CreateBookDto {
   @IsOptional()
   @IsUUID('4', { message: 'User ID is invalid!' })
   userId: string;
+
+  @ApiProperty({
+    name: 'Active',
+    description: 'Active or inactive of book',
+    type: [String],
+    required: false,
+  })
+  @IsOptional()
+  active: boolean;
 }
