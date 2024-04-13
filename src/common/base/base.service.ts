@@ -57,9 +57,13 @@ export abstract class BaseService<TEntity extends AppEntity>
   }
 
   async findById(id: string): Promise<TEntity> {
-    const result = await this.repository.findOne({
-      where: { id } as FindOptionsWhere<TEntity>,
-    });
+    const filters = { where: { id } as FindOptionsWhere<TEntity> };
+
+    if (this.options && this.options.relations) {
+      filters['relations'] = this.options.relations;
+    }
+
+    const result = await this.repository.findOne(filters);
 
     if (!result) throw new NotFoundException('Register not found.');
     return result;
