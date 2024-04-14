@@ -10,7 +10,7 @@ import { isUUID } from 'class-validator';
 export const validateId = (id: string) => {
   if (!isUUID(id)) {
     throw new HttpException(
-      'Identificação informada é inválida.',
+      'Identification provided is invalid.',
       HttpStatus.BAD_REQUEST,
     );
   }

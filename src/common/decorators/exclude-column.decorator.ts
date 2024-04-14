@@ -20,7 +20,7 @@ export const ExcludeColumn = (validationOptions?: ValidationOptions) => {
         defaultMessage() {
           const { message } = validationOptions;
           throw new HttpException(
-            message ?? 'Não é possível completar a solicitação.',
+            message ?? 'Unable to complete the request.',
             HttpStatus.UNPROCESSABLE_ENTITY,
           );
         },
