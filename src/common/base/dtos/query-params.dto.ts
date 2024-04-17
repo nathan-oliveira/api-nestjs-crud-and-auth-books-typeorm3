@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional } from 'class-validator';
+import { IsBoolean, IsOptional } from 'class-validator';
+import { Transform } from 'class-transformer';
+
 import { IOrderBy } from '../utils/serialize-order-by';
 import { IRangeDates } from '../utils/serialize-range-dates';
 
@@ -40,12 +42,23 @@ export class QueryParamsDto {
   @IsOptional()
   orderBy?: string | IOrderBy;
 
-  @IsOptional()
   @ApiProperty({
     name: 'Period Date',
     description: 'Period Execution between two dates',
     type: [String],
     required: false,
   })
+  @IsOptional()
   rangeDates?: string | IRangeDates;
+
+  @ApiProperty({
+    name: 'Period Date',
+    description: 'Period Execution between two dates',
+    type: [String],
+    required: false,
+  })
+  @IsOptional()
+  @Transform(({ value }) => value === 'true')
+  @IsBoolean()
+  active?: boolean;
 }

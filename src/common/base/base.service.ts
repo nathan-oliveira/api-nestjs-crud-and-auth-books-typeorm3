@@ -30,7 +30,7 @@ export abstract class BaseService<TEntity extends AppEntity>
     queryParams: QueryParamsDto,
     conditions: Array<object> = [],
   ): Promise<Pagination<TEntity>> {
-    const { page, limit, search, orderBy, rangeDates } = queryParams;
+    const { page, limit, search, orderBy, rangeDates, active } = queryParams;
     const options = {};
 
     if (orderBy) options['order'] = serializeOrderBy(orderBy);
@@ -43,6 +43,7 @@ export abstract class BaseService<TEntity extends AppEntity>
       conditions.push(dates);
     }
 
+    if (typeof active === 'boolean') conditions.push({ active });
     const where = serializeConditions(conditions, search, this.options);
     if (where) options['where'] = where;
 
