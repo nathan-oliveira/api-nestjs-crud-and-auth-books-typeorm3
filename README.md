@@ -59,6 +59,8 @@ $ npm run migration:run
 
 ## revert migration
 $ npm run migration:revert
+$ npm run typeorm -- migration:show
+$ npm run typeorm -- migration:revert --version=createColumnActiveModule1713469404233
 ```
 
 ## Running the app

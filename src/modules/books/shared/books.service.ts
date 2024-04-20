@@ -27,7 +27,10 @@ export class BooksService
     @InjectRepository(BookEntity)
     private readonly userRepository: Repository<BookEntity>,
   ) {
-    super(userRepository, { filters: ['title'], relations: ['user'] });
+    super(userRepository, {
+      filters: ['title', 'description'],
+      relations: ['user'],
+    });
   }
 
   async createAndUpload(

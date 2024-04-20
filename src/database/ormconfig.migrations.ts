@@ -5,8 +5,6 @@ import { join } from 'path';
 
 const configService = new ConfigService({ env: env.config() });
 
-console.log(join(__dirname, '../modules/**/*.entity{.ts,.js}'))
-
 export default new DataSource({
   type: 'postgres',
   host: configService.get('DATABASE_HOST'),
