@@ -82,7 +82,7 @@ export class ProfileController {
     return plainToClass(ReadProfileDto, user);
   }
 
-  @Delete(':id/photo')
+  @Delete('photo')
   @ApiNoContentResponse()
   async removePhoto(@UserAuth() { id }: LoginUserDto): Promise<void> {
     return await this.usersService.removePhoto(id);
