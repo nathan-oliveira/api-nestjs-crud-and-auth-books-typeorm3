@@ -5,26 +5,26 @@
 ## Installation
 
 ```bash
-$ yarn install
+yarn install
 ```
 
 ## Dependencies
 
 ```bash
-$ yarn add class-transformer class-validator typeorm pg 
-$ yarn add @nestjs/config 
-$ yarn add @nestjs/typeorm @nestjs/mapped-types
-$ yarn add @nestjs/swagger swagger-ui-express
-$ yarn add bcrypt 
-$ yarn add @types/bcrypt -D
-$ yarn add @nestjs/passport passport passport-local 
-$ yarn add @types/passport-local -D
-$ yarn add @nestjs/jwt passport-jwt 
-$ yarn add @types/passport-jwt -D
-$ yarn add ioredis
-$ yarn add @types/multer -D
-$ yarn add tsconfig-paths -D
-$ yarn upgrade
+yarn add class-transformer class-validator typeorm pg 
+yarn add @nestjs/config 
+yarn add @nestjs/typeorm @nestjs/mapped-types
+yarn add @nestjs/swagger swagger-ui-express
+yarn add bcrypt 
+yarn add @types/bcrypt -D
+yarn add @nestjs/passport passport passport-local 
+yarn add @types/passport-local -D
+yarn add @nestjs/jwt passport-jwt 
+yarn add @types/passport-jwt -D
+yarn add ioredis
+yarn add @types/multer -D
+yarn add tsconfig-paths -D
+yarn upgrade
 ```
 
 ```
@@ -35,17 +35,19 @@ nest g resource modules/users
 
 ## Docker (PostgreSQL & PgAdmin)
 
-### Requirements:
+### Requirements
+
 * docker >= 17.12.0+
 * docker-compose
 * node >= 18.17.1
 
 # Command to give execution permission
-```bash
-$ chmod +x .docker/entrypoint.sh
-$ chmod +x .docker/postgres/create-schema.sh
 
-$ docker-compose up -d
+```bash
+chmod +x .docker/entrypoint.sh
+chmod +x .docker/postgres/create-schema.sh
+dos2unix .docker/postgres/create-schema.sh
+docker-compose up -d
 ```
 
 ## TypeORM 3
@@ -95,11 +97,10 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+* Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+* Website - [https://nestjs.com](https://nestjs.com/)
+* Twitter - [@nestframework](https://twitter.com/nestframework)
 
 ## License
 
 Nest is [MIT licensed](LICENSE).
-
