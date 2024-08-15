@@ -18,6 +18,7 @@ import {
 } from 'src/modules/users/interfaces/user-service.interface';
 
 import { IAuthService } from '../interfaces/auth-service.interface';
+import { I18nGlobalService } from 'src/common/i18n/i18n-global.service';
 
 @Injectable()
 export class AuthService implements IAuthService {
@@ -26,12 +27,14 @@ export class AuthService implements IAuthService {
     private readonly usersService: IUserService,
     private readonly jwtService: JwtService,
     private readonly redis: RedisService,
+    private readonly i18n: I18nGlobalService,
   ) {}
 
   async validateUser(
     username: string,
     password: string,
   ): Promise<ValidateUserDto | boolean> {
+    console.log(this.i18n.translate('common.test'));
     const user = await this.usersService.findUserByUserName(username);
 
     if (!user) {

@@ -11,6 +11,7 @@ import { VersionController } from './version/shared/version.controller';
 import { VersionService } from './version/shared/version.service';
 import { BooksModule } from './books/books.module';
 import { ProfileModule } from './profile/profile.module';
+import { I18nGlobalModule } from 'src/common/i18n/i18n-global.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ProfileModule } from './profile/profile.module';
       inject: [ConfigService],
       useFactory: OrmConfigFactory,
     }),
+    I18nGlobalModule,
     UsersModule,
     AuthModule,
     ProfileModule,
