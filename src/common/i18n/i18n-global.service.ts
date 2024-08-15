@@ -6,7 +6,7 @@ export class I18nGlobalService {
   constructor(private readonly i18nService: I18nService) {}
 
   translate(key: string): Promise<string> {
-    const lang = I18nContext.current().lang || 'en';
+    const lang = I18nContext.current().lang || 'en-US';
     return this.i18nService.translate(key, { lang });
   }
 }
