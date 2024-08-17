@@ -7,11 +7,6 @@ import { UsersService } from './users.service';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 
 import {
-  IUserServiceType,
-  IUserService,
-} from '../interfaces/user-service.interface';
-
-import {
   mockCreateUserDto,
   mockFileMulter,
   mockMethodsRepository,
@@ -20,30 +15,31 @@ import {
   mockStealableFile,
   mockResponse,
   mockUpdateUserDto,
+  mockI18nService,
 } from 'src/../test/mock';
+import { I18nGlobalModule } from 'src/common/i18n/i18n-global.module';
+import { I18nGlobalService } from 'src/common/i18n/i18n-global.service';
 
 describe('UsersController', () => {
   let controller: UsersController;
-  let service: IUserService;
+  let service: UsersService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
       providers: [
-        {
-          provide: IUserServiceType,
-          useClass: UsersService,
-        },
+        UsersService,
+        { provide: I18nGlobalService, useValue: mockI18nService() },
         {
           provide: getRepositoryToken(UserEntity),
           useValue: mockMethodsRepository,
         },
       ],
-      imports: [UserEntity],
+      imports: [I18nGlobalModule, UserEntity],
     }).compile();
 
     controller = module.get<UsersController>(UsersController);
-    service = module.get<IUserService>(IUserServiceType);
+    service = module.get<UsersService>(UsersService);
   });
 
   it('controller must be defined', () => {
@@ -69,12 +65,13 @@ describe('UsersController', () => {
 
     it('should call the method and return invalid parameters', async () => {
       const result = mockReadUserDto();
-
-      const findSpy = jest
-        .spyOn(service, 'create')
-        .mockResolvedValueOnce(result);
-
       const user = mockCreateUserDto();
+      const findSpy = jest.spyOn(service, 'create').mockResolvedValueOnce({
+        ...result,
+        password: user.password,
+        photo: null,
+      });
+
       const photo = mockFileMulter();
 
       await controller.create(user, null);

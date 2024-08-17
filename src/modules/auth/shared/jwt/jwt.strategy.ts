@@ -2,19 +2,16 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { RedisService } from 'src/config/redis.config';
+import { RedisService } from 'src/common/redis/redis.config';
 
 import { JwtPayloadDto } from 'src/modules/auth/dtos';
-import {
-  IAuthService,
-  IAuthServiceType,
-} from '../../interfaces/auth-service.interface';
+
+import { AuthService } from '../auth.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @Inject(IAuthServiceType)
-    private readonly authService: IAuthService,
+    private readonly authService: AuthService,
     private readonly redis: RedisService,
   ) {
     const configService = new ConfigService();

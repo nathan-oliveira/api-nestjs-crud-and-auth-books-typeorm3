@@ -4,19 +4,19 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { UsersModule } from 'src/modules/users/users.module';
-import { RedisService } from 'src/config/redis.config';
 import JwtConfigFactory from 'src/config/jwt.config';
 
 import { AuthController } from './shared/auth.controller';
 import { AuthService } from './shared/auth.service';
 import { LocalStrategy } from './shared/local/local.strategy';
 import { JwtStrategy } from './shared/jwt/jwt.strategy';
-import { IAuthServiceType } from './interfaces/auth-service.interface';
+import { RedisModule } from 'src/common/redis/redis.module';
 
 @Module({
   imports: [
     UsersModule,
     PassportModule,
+    RedisModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -24,11 +24,6 @@ import { IAuthServiceType } from './interfaces/auth-service.interface';
     }),
   ],
   controllers: [AuthController],
-  providers: [
-    RedisService,
-    { provide: IAuthServiceType, useClass: AuthService },
-    LocalStrategy,
-    JwtStrategy,
-  ],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}

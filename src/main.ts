@@ -7,7 +7,7 @@ import { AppModule } from './modules/app.module';
 import { AppConfig } from './config/app.config';
 
 async function bootstrap() {
-  const configService = new ConfigService();
+  const configService = Reflect.construct(ConfigService, []);
   const port = configService.get<number>('APP_PORT', { infer: true });
   const nodeEnv = configService.get<string>('NODE_ENV');
 
@@ -15,8 +15,9 @@ async function bootstrap() {
     logger: nodeEnv !== 'development' ? ['error'] : true,
   } as NestApplicationOptions);
 
-  const app = new AppConfig(nestApp, configService).createApp();
-  await app.listen(port, () => console.log(`[+] http://localhost:${port}`));
+  Reflect.construct(AppConfig, [nestApp, configService])
+    .createApp()
+    .listen(port, () => console.log(`[+] http://localhost:${port}`));
 }
 
 bootstrap();

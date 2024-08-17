@@ -29,8 +29,8 @@ export class AppConfig {
   }
 
   private enableCors(): void {
-    const config = new CorsConfig(this.configService).getConfig();
-    this.app.enableCors(config);
+    const config = Reflect.construct(CorsConfig, [this.configService]);
+    this.app.enableCors(config.getConfig());
   }
 
   private setGlobalConfigs(): void {

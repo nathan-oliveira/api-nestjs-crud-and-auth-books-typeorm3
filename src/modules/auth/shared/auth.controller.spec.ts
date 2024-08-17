@@ -5,17 +5,11 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersService } from 'src/modules/users/shared/users.service';
-import { RedisService } from 'src/config/redis.config';
+import { RedisService } from 'src/common/redis/redis.config';
 
 import { UserEntity } from 'src/modules/users/entities/user.entity';
-import {
-  IAuthServiceType,
-  IAuthService,
-} from '../interfaces/auth-service.interface';
-import {
-  IUserServiceType,
-  IUserService,
-} from 'src/modules/users/interfaces/user-service.interface';
+
+import { I18nGlobalModule } from 'src/common/i18n/i18n-global.module';
 
 import {
   mockReadUserDto,
@@ -25,19 +19,23 @@ import {
   mockRequest,
   mockRedisService,
   mockMethodsRepository,
+  mockI18nService,
 } from 'src/../test/mock';
+import { I18nGlobalService } from 'src/common/i18n/i18n-global.service';
 
 describe('AuthController', () => {
   let controller: AuthController;
-  let authService: IAuthService;
-  let usersService: IUserService;
+  let authService: AuthService;
+  let usersService: UsersService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [I18nGlobalModule, UserEntity],
       controllers: [AuthController],
       providers: [
-        { provide: IAuthServiceType, useClass: AuthService },
-        { provide: IUserServiceType, useClass: UsersService },
+        AuthService,
+        UsersService,
+        { provide: I18nGlobalService, useValue: mockI18nService() },
         {
           provide: JwtService,
           useValue: mockJwtService(),
@@ -51,12 +49,11 @@ describe('AuthController', () => {
           useValue: mockMethodsRepository,
         },
       ],
-      imports: [UserEntity],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
-    authService = module.get<IAuthService>(IAuthServiceType);
-    usersService = module.get<IUserService>(IUserServiceType);
+    authService = module.get<AuthService>(AuthService);
+    usersService = module.get<UsersService>(UsersService);
   });
 
   it('should be defined', () => {

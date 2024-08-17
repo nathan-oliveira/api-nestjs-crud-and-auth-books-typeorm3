@@ -22,7 +22,10 @@ export const mockReadUserDto = (): ReadUserDto => {
 
 export const mockCreateUserDto = (): CreateUserDto => {
   const { id, createdAt, updatedAt, removedAt, ...rest } = mockReadUserDto();
-  return { ...rest, password: faker.internet.password({ length: 14 }) };
+  return {
+    ...rest,
+    password: faker.internet.password({ length: 14 }),
+  };
 };
 
 export const mockUpdateUserDto = (): UpdateUserDto => mockCreateUserDto();

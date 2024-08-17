@@ -28,7 +28,7 @@ export const mockReadBookDto = (): ReadBookDto => {
 
 export const mockCreateBookDto = (): CreateBookDto => {
   const { title, description, userId } = mockReadBookDto();
-  return { title, description, userId };
+  return { title, description, userId, active: true };
 };
 
 export const mockUpdateBookDto = (): UpdateBookDto => mockCreateBookDto();

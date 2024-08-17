@@ -4,7 +4,7 @@ import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer
 import { diskStorage } from 'multer';
 import { extname, resolve } from 'path';
 import * as mkdirp from 'mkdirp';
-import { generateNameImage } from '../base/utils/storage';
+import { generateNameImage } from '../base/utils/storage-local';
 
 export type IMulterMiddlewareOptions = {
   folder: string;

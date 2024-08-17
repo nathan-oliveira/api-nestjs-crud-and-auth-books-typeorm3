@@ -23,21 +23,16 @@ import { UserAuth } from 'src/common/decorators/user-auth.decorator';
 import { MulterMiddleware } from 'src/common/middlewares/multer.middleware';
 
 import { ReadProfileDto, UpdateProfileDto } from 'src/modules/profile/dtos';
-import {
-  IUserServiceType,
-  IUserService,
-} from 'src/modules/users/interfaces/user-service.interface';
+
 import { LoginUserDto } from 'src/modules/auth/dtos';
+import { UsersService } from 'src/modules/users/shared/users.service';
 
 @ApiTags('Profile')
 @JwtAuth(Rule.USER, Rule.ADMIN)
 @Controller('profile')
 @UseInterceptors(ClassSerializerInterceptor)
 export class ProfileController {
-  constructor(
-    @Inject(IUserServiceType)
-    private readonly usersService: IUserService,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Get()
   @ApiOkResponse({ type: ReadProfileDto })

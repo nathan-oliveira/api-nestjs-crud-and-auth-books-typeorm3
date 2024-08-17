@@ -87,3 +87,4 @@ export * from './users';
 export * from './books';
 export * from './users';
 export * from './auth';
+export * from './i18n';

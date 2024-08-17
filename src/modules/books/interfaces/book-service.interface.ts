@@ -7,8 +7,6 @@ import {
   UpdateBookDto,
 } from '../dtos';
 
-export const IBookServiceType = 'IBookServiceType';
-
 export interface IBookService extends IBaseService {
   createAndUpload: (
     createBookDto: CreateBookDto,

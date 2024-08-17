@@ -15,7 +15,7 @@ import {
 import {
   removeImageStorage,
   updateImageStorage,
-} from 'src/common/base/utils/storage';
+} from 'src/common/base/utils/storage-local';
 import { IBookService } from '../interfaces/book-service.interface';
 
 @Injectable()
@@ -55,7 +55,8 @@ export class BooksService
   ): Promise<ReadBookDto> {
     try {
       const book = await this.repository.preload({ ...updateBookDto, id });
-      if (!book) throw new NotFoundException('Register not found.');
+      if (!book)
+        throw new NotFoundException(this.i18n.translate('book.notFound'));
       if (imagePath) book.fileUrl = updateImageStorage(imagePath, book.fileUrl);
       return await this.repository.save(book);
     } catch (error) {

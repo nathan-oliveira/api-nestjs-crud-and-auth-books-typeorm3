@@ -31,23 +31,17 @@ import {
   UpdateBookDto,
 } from 'src/modules/books/dtos';
 
-import {
-  IBookService,
-  IBookServiceType,
-} from '../interfaces/book-service.interface';
 import { MulterMiddleware } from 'src/common/middlewares/multer.middleware';
 import { UserAuth } from 'src/common/decorators/user-auth.decorator';
 import { LoginUserDto } from 'src/modules/auth/dtos';
+import { BooksService } from './books.service';
 
 @ApiTags('Books')
 @JwtAuth(Rule.USER, Rule.ADMIN)
 @Controller('books')
 @UseInterceptors(ClassSerializerInterceptor)
 export class BooksController {
-  constructor(
-    @Inject(IBookServiceType)
-    private readonly booksService: IBookService,
-  ) {}
+  constructor(private readonly booksService: BooksService) {}
 
   @Post()
   @UseInterceptors(

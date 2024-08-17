@@ -3,6 +3,7 @@ import { Repository, DeepPartial, FindOptionsWhere } from 'typeorm';
 import { createReadStream } from 'fs';
 import * as fs from 'fs';
 
+import { I18nGlobalService } from 'src/common/i18n/i18n-global.service';
 import { IBaseService } from 'src/common/base/base.interface';
 import { AppEntity } from 'src/common/base/entities/app.entity';
 
@@ -13,7 +14,7 @@ import { IServiceOptionsDto } from './dtos/service-options.dto';
 
 import { serializeOrderBy } from './utils/serialize-order-by';
 import { serializeConditions } from './utils/serialize-conditions';
-import { removeImageStorage } from './utils/storage';
+import { removeImageStorage } from './utils/storage-local';
 import { Pagination, paginate } from './paginate';
 import { serializeRangeDates } from './utils/serialize-range-dates';
 
@@ -21,6 +22,8 @@ import { serializeRangeDates } from './utils/serialize-range-dates';
 export abstract class BaseService<TEntity extends AppEntity>
   implements IBaseService
 {
+  readonly i18n: I18nGlobalService;
+
   constructor(
     readonly repository: Repository<TEntity>,
     readonly options: IServiceOptionsDto = null,
@@ -66,7 +69,8 @@ export abstract class BaseService<TEntity extends AppEntity>
 
     const result = await this.repository.findOne(filters);
 
-    if (!result) throw new NotFoundException('Register not found.');
+    if (!result)
+      throw new NotFoundException(this.i18n.translate('base.registerNotFound'));
     return result;
   }
 
@@ -97,7 +101,7 @@ export abstract class BaseService<TEntity extends AppEntity>
     })) as DeepPartial<TEntity>;
 
     if (!preloadUpdateEntity) {
-      throw new NotFoundException('Register not found.');
+      throw new NotFoundException(this.i18n.translate('base.registerNotFound'));
     }
 
     return await this.repository.save(preloadUpdateEntity);
@@ -123,10 +127,12 @@ export abstract class BaseService<TEntity extends AppEntity>
   async renderImage(id: string, photoProp: string): Promise<ReadPhotoDto> {
     const steam = { file: null, mimetype: null };
     const user = await this.findById(id);
-    if (!user[photoProp]) throw new NotFoundException('Image not found.');
+    if (!user[photoProp])
+      throw new NotFoundException(this.i18n.translate('base.imageNotFound'));
 
     const fileExist = fs.existsSync(user[photoProp]);
-    if (!fileExist) throw new NotFoundException('Image not found.');
+    if (!fileExist)
+      throw new NotFoundException(this.i18n.translate('base.imageNotFound'));
 
     steam.file = await createReadStream(user[photoProp]);
     steam.mimetype = getMimetype(steam.file.path);
@@ -135,7 +141,8 @@ export abstract class BaseService<TEntity extends AppEntity>
 
   async destroyImage(id: string, photoProp: string): Promise<void> {
     const data = await this.findById(id);
-    if (!data[photoProp]) throw new NotFoundException('Image not found.');
+    if (!data[photoProp])
+      throw new NotFoundException(this.i18n.translate('base.imageNotFound'));
     data[photoProp] = null;
     await this.repository.save(data);
     removeImageStorage(data[photoProp]);

@@ -15,7 +15,7 @@ export class AppEntity extends BaseEntity {
   id: string;
 
   @Column({ default: true })
-  @IsBoolean({ message: 'Ativo precisa ser um verdadeiro ou falso' })
+  @IsBoolean({ message: 'Active value must be either true or false' })
   active: boolean;
 
   @Exclude()

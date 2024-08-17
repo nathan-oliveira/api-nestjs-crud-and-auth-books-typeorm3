@@ -7,11 +7,6 @@ import { BooksService } from './books.service';
 import { BookEntity } from 'src/modules/books/entities/book.entity';
 
 import {
-  IBookServiceType,
-  IBookService,
-} from '../interfaces/book-service.interface';
-
-import {
   mockCreateBookDto,
   mockFileMulter,
   mockMethodsRepository,
@@ -21,30 +16,31 @@ import {
   mockRequest,
   mockResponse,
   mockUpdateBookDto,
+  mockI18nService,
 } from 'src/../test/mock';
+import { I18nGlobalModule } from 'src/common/i18n/i18n-global.module';
+import { I18nGlobalService } from 'src/common/i18n/i18n-global.service';
 
 describe('BooksController', () => {
   let controller: BooksController;
-  let service: IBookService;
+  let service: BooksService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [I18nGlobalModule, BookEntity],
       controllers: [BooksController],
       providers: [
-        {
-          provide: IBookServiceType,
-          useClass: BooksService,
-        },
+        BooksService,
+        { provide: I18nGlobalService, useValue: mockI18nService() },
         {
           provide: getRepositoryToken(BookEntity),
           useValue: mockMethodsRepository,
         },
       ],
-      imports: [BookEntity],
     }).compile();
 
     controller = module.get<BooksController>(BooksController);
-    service = module.get<IBookService>(IBookServiceType);
+    service = module.get<BooksService>(BooksService);
   });
 
   it('controller must be defined', () => {
@@ -74,7 +70,7 @@ describe('BooksController', () => {
 
       const findSpy = jest
         .spyOn(service, 'create')
-        .mockResolvedValueOnce(result);
+        .mockResolvedValueOnce({ ...result, fileUrl: '' });
 
       const req = mockRequest();
       const book = mockCreateBookDto();

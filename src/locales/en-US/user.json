@@ -1,0 +1,5 @@
+{
+  "usernameAlreadyExists": "Username entered is already in use!",
+  "emailAlreadyExists": "The email provided is already in use!",
+  "userNotFound": "User not found!"
+}

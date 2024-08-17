@@ -6,37 +6,33 @@ import { BooksService } from './books.service';
 import { BookEntity } from 'src/modules/books/entities/book.entity';
 
 import {
-  IBookServiceType,
-  IBookService,
-} from '../interfaces/book-service.interface';
-
-import {
   mockCreateBookDto,
+  mockI18nService,
   mockMethodsRepository,
   mockReadBookDto,
   mockReadPhotoDto,
   mockUpdateBookDto,
 } from 'src/../test/mock';
+import { I18nGlobalModule } from 'src/common/i18n/i18n-global.module';
+import { I18nGlobalService } from 'src/common/i18n/i18n-global.service';
 
 describe('BooksService', () => {
-  let service: IBookService;
+  let service: BooksService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [I18nGlobalModule, BookEntity],
       providers: [
-        {
-          provide: IBookServiceType,
-          useClass: BooksService,
-        },
+        BooksService,
+        { provide: I18nGlobalService, useValue: mockI18nService() },
         {
           provide: getRepositoryToken(BookEntity),
           useValue: mockMethodsRepository,
         },
       ],
-      imports: [BookEntity],
     }).compile();
 
-    service = module.get<IBookService>(IBookServiceType);
+    service = module.get<BooksService>(BooksService);
   });
 
   it('should be defined', () => {

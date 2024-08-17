@@ -6,37 +6,33 @@ import { UsersService } from './users.service';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 
 import {
-  IUserServiceType,
-  IUserService,
-} from '../interfaces/user-service.interface';
-
-import {
   mockCreateUserDto,
   mockMethodsRepository,
   mockReadUserDto,
   mockReadPhotoDto,
   mockUpdateUserDto,
+  mockI18nService,
 } from 'src/../test/mock';
+import { I18nGlobalModule } from 'src/common/i18n/i18n-global.module';
+import { I18nGlobalService } from 'src/common/i18n/i18n-global.service';
 
 describe('UsersService', () => {
-  let service: IUserService;
+  let service: UsersService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        {
-          provide: IUserServiceType,
-          useClass: UsersService,
-        },
+        UsersService,
+        { provide: I18nGlobalService, useValue: mockI18nService() },
         {
           provide: getRepositoryToken(UserEntity),
           useValue: mockMethodsRepository,
         },
       ],
-      imports: [UserEntity],
+      imports: [I18nGlobalModule, UserEntity],
     }).compile();
 
-    service = module.get<IUserService>(IUserServiceType);
+    service = module.get<UsersService>(UsersService);
   });
 
   it('should be defined', () => {

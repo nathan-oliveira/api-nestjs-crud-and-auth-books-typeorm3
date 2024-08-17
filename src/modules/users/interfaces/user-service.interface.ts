@@ -3,8 +3,6 @@ import { IBaseService } from 'src/common/base/base.interface';
 
 import { CreateUserDto, ReadUserDto, UpdateUserDto } from '../dtos';
 
-export const IUserServiceType = 'IUserServiceType';
-
 export interface IUserService extends IBaseService {
   findUserByUserName: (username: string) => Promise<ReadUserDto>;
 

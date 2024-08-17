@@ -23,19 +23,13 @@ import { UserAuth } from 'src/common/decorators/user-auth.decorator';
 
 import { LocalAuthGuard } from './local/local-auth.guard';
 
-import {
-  IAuthServiceType,
-  IAuthService,
-} from '../interfaces/auth-service.interface';
+import { AuthService } from './auth.service';
 
 @ApiTags('Auth')
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
-  constructor(
-    @Inject(IAuthServiceType)
-    private readonly authService: IAuthService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
   async create(@Body() createAuthDto: CreateAuthDto): Promise<ReadAuthDto> {

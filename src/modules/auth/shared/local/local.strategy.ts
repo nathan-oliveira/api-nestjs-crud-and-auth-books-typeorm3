@@ -4,17 +4,10 @@ import { Strategy } from 'passport-local';
 
 import { AuthService } from 'src/modules/auth/shared/auth.service';
 import { ValidateUserDto } from 'src/modules/auth/dtos';
-import {
-  IAuthService,
-  IAuthServiceType,
-} from '../../interfaces/auth-service.interface';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    @Inject(IAuthServiceType)
-    private readonly authService: IAuthService,
-  ) {
+  constructor(private readonly authService: AuthService) {
     super({
       usernameField: 'username',
       passwordField: 'password',

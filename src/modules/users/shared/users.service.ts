@@ -7,6 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { I18nGlobalService } from 'src/common/i18n/i18n-global.service';
 import { IUserService } from 'src/modules/users/interfaces/user-service.interface';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { BaseService } from 'src/common/base/base.service';
@@ -22,7 +23,7 @@ import { ReadPhotoDto } from 'src/common/base/dtos/read-photo.dto';
 import {
   removeImageStorage,
   updateImageStorage,
-} from 'src/common/base/utils/storage';
+} from 'src/common/base/utils/storage-local';
 
 import { convertToHash } from 'src/common/utils/bcrypt';
 
@@ -55,14 +56,14 @@ export class UsersService
 
     if (user.username === username) {
       throw new HttpException(
-        'Username entered is already in use.',
+        this.i18n.translate('user.usernameAlreadyExists'),
         HttpStatus.CONFLICT,
       );
     }
 
     if (user.email === email) {
       throw new HttpException(
-        'The email provided is already in use.',
+        this.i18n.translate('user.emailAlreadyExists'),
         HttpStatus.CONFLICT,
       );
     }
@@ -94,7 +95,8 @@ export class UsersService
   ): Promise<ReadUserDto> {
     try {
       const user = await this.repository.preload({ ...updateUserDto, id });
-      if (!user) throw new NotFoundException('Register not found.');
+      if (!user)
+        throw new NotFoundException(this.i18n.translate('user.userNotFound'));
       if (imagePath) user.photo = updateImageStorage(imagePath, user.photo);
 
       const password = await convertToHash(updateUserDto.password);

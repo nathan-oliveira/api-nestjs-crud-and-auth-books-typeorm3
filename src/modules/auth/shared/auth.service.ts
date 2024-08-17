@@ -11,20 +11,16 @@ import {
 } from 'src/modules/auth/dtos';
 
 import { CreateUserDto, ReadUserDto } from 'src/modules/users/dtos';
-import { RedisService } from 'src/config/redis.config';
-import {
-  IUserServiceType,
-  IUserService,
-} from 'src/modules/users/interfaces/user-service.interface';
+import { RedisService } from 'src/common/redis/redis.config';
 
 import { IAuthService } from '../interfaces/auth-service.interface';
 import { I18nGlobalService } from 'src/common/i18n/i18n-global.service';
+import { UsersService } from 'src/modules/users/shared/users.service';
 
 @Injectable()
 export class AuthService implements IAuthService {
   constructor(
-    @Inject(IUserServiceType)
-    private readonly usersService: IUserService,
+    private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly redis: RedisService,
     private readonly i18n: I18nGlobalService,
@@ -34,19 +30,18 @@ export class AuthService implements IAuthService {
     username: string,
     password: string,
   ): Promise<ValidateUserDto | boolean> {
-    console.log(this.i18n.translate('common.test'));
     const user = await this.usersService.findUserByUserName(username);
 
     if (!user) {
       throw new HttpException(
-        'Invalid username and/or password. Please try again!',
+        this.i18n.translate('auth.invalidLogin'),
         HttpStatus.FORBIDDEN,
       );
     }
 
     if (!user.active) {
       throw new HttpException(
-        'User is disabled. Please contact the admin!',
+        this.i18n.translate('auth.disabledUser'),
         HttpStatus.FORBIDDEN,
       );
     }
@@ -54,7 +49,7 @@ export class AuthService implements IAuthService {
     const passwordIsValid = await compareHash(password, user.password);
     if (!passwordIsValid) {
       throw new HttpException(
-        'Invalid username and/or password. Please try again!',
+        this.i18n.translate('auth.invalidLogin'),
         HttpStatus.FORBIDDEN,
       );
     }

@@ -3,10 +3,6 @@ enum EnumOrder {
   DESC = 'DESC',
 }
 
-interface ObjectLiteral {
-  [s: string]: 'ASC' | 'DESC' | 'asc' | 'desc';
-}
-
 export interface IOrderBy {
   column: string;
   order: EnumOrder;
@@ -14,21 +10,22 @@ export interface IOrderBy {
 
 /** Ex:
  * @param {value} value - JSON.stringify({ column: 'title', order: 'DESC' })
- * @returns {ObjectLiteral} - { title: 'DESC' }
+ * @param {value} value - JSON.stringify({ column: 'user.name', order: 'DESC' })
+ * @returns {Object} - { title: 'DESC' }
  */
-export const serializeOrderBy = (value: string | IOrderBy): ObjectLiteral => {
+export const serializeOrderBy = (value: string | IOrderBy) => {
   if (value && typeof value === 'string') {
-    const orderBy = {};
     const { column, order } = JSON.parse(value) as IOrderBy;
-    orderBy[column] = order.toUpperCase();
-    return orderBy;
+    if (!column.includes('.')) return orderByJson({ column, order });
+    const [relation, columnRelation] = column.split('.');
+    return {
+      [relation]: { [columnRelation]: order.toUpperCase() },
+    };
   }
 
   return orderByJson(value as IOrderBy);
 };
 
-const orderByJson = (value: IOrderBy): ObjectLiteral => {
-  const orderBy = {};
-  orderBy[value.column] = value.order.toUpperCase();
-  return orderBy;
-};
+const orderByJson = (value: IOrderBy) => ({
+  [value.column]: value.order.toUpperCase(),
+});
