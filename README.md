@@ -54,7 +54,7 @@ docker-compose up -d
 
 ```bash
 ## create migration
-$ MIGRATION_NAME=name npm run migration:create
+$ npm run migration:create nameMigration
 
 ## run migration
 $ npm run migration:run

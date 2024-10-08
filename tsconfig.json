@@ -19,6 +19,6 @@
     "noFallthroughCasesInSwitch": false,
     "resolveJsonModule": true,
   },
-  "include": ["src", "test"],
+  "include": ["src", "test", "migration.create.js"],
   "exclude": ["dist", "node_modules"]
 }
